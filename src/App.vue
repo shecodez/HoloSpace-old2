@@ -1,24 +1,47 @@
 <template>
   <v-app>
-    <Header />
+    <NavigationDrawer />
+    <AppBar :show="showAppBar" />
     <v-content>
-      <router-view />
+      <router-view></router-view>
     </v-content>
+    <Footer :show="showFooter" />
+    <Snackbar />
   </v-app>
 </template>
 
 <script>
-import Header from "@/components/Header";
+import { mapState } from "vuex";
+
+import AppBar from "@/components/AppBar.vue";
+import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import Footer from "@/components/Footer.vue";
+import Snackbar from "@/components/Snackbar.vue";
 
 export default {
   name: "App",
 
   components: {
-    Header
+    AppBar,
+    NavigationDrawer,
+    Footer,
+    Snackbar
   },
 
-  data: () => ({
-    //
-  })
+  data: () => ({}),
+  computed: mapState("global", ["showAppBar", "showFooter"])
 };
 </script>
+
+<style lang="scss">
+//@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html {
+  overflow-y: hidden !important;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="rgba(0, 0, 0, 0)" flat>
+  <v-app-bar app color="rgba(0, 0, 0, 0)" flat :value="show">
     <div class="d-flex align-center">
       <v-img
         alt="HoloSpace Logo"
@@ -22,21 +22,25 @@
 
     <v-spacer></v-spacer>
     <span v-if="isLoggedIn">
-      <router-link to="/chat" class="mr-2">Open App</router-link>
+      <v-btn to="/chat" outlined rounded>Open App</v-btn>
       <v-btn @click="logout" text>Logout</v-btn>
     </span>
     <span v-else>
-      <router-link to="/login" class="mr-2">Login</router-link>
+      <v-btn to="/login" outlined rounded>Login</v-btn>
     </span>
+    <ToggleThemeBtn />
   </v-app-bar>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+import ToggleThemeBtn from "@/components/ToggleThemeBtn";
 
 export default {
-  name: "Header",
+  name: "AppBar",
 
+  components: { ToggleThemeBtn },
+  props: ["show"],
   data: () => ({}),
   computed: {
     ...mapState("auth", ["user"]),

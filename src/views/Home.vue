@@ -1,13 +1,15 @@
 <template>
-  <div class="home">
+  <Layout page="Home">
     <h1>HomePage</h1>
-  </div>
+  </Layout>
 </template>
 
 <script>
 // @ is an alias to /src
+import Layout from "@/layouts/Default.vue";
 
 export default {
-  name: "Home"
+  name: "Home",
+  components: { Layout }
 };
 </script>

@@ -32,7 +32,7 @@
 <script>
 //import bg1 from "@/assets/fire-planet-ice-1920x1200.jpg";
 //import bg2 from "@/assets/flat-mountains-1080p.jpg";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -45,6 +45,10 @@ export default {
     ],
     timeoutAnimation: ""
   }),
+  beforeMount() {
+    this.setShowAppBar(true);
+    this.setShowFooter(false);
+  },
   computed: mapState("auth", ["user"]),
   watch: {
     user(value) {
@@ -54,6 +58,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("global", ["setShowAppBar", "setShowFooter"]),
     selectBgImg() {
       const css = `.page-layout, .form-div:before, .logo-div:before { background: url(${
         this.bgs[Math.floor(Math.random() * this.bgs.length)]
