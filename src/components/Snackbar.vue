@@ -12,9 +12,9 @@ import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapState("global", ["alertText", "alertType"]),
-    ...mapGetters("global", ["showAlert"])
+    ...mapState("app", ["alertText", "alertType"]),
+    ...mapGetters("app", ["showAlert"])
   },
-  methods: mapActions("global", ["clearAlert"])
+  methods: mapActions("app", ["clearAlert"])
 };
 </script>

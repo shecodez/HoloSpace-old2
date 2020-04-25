@@ -5,6 +5,8 @@ const state = {
   showAppBar: false,
   showDrawer: false,
   showFooter: false,
+  sideDrawerIsOpen: true,
+  metaDrawerIsMini: false,
 };
 
 const mutations = {
@@ -25,6 +27,18 @@ const mutations = {
   setShowFooter(state, payload) {
     state.showFooter = payload;
   },
+  setSideDrawerIsOpen(state, payload) {
+    state.sideDrawerIsOpen = payload;
+  },
+  setMetaDrawerIsMini(state, payload) {
+    state.metaDrawerIsMini = payload;
+  },
+  toggleSideDrawerIsOpen(state) {
+    state.sideDrawerIsOpen = !state.sideDrawerIsOpen;
+  },
+  toggleMetaDrawerIsMini(state) {
+    state.metaDrawerIsMini = !state.metaDrawerIsMini;
+  },
 };
 
 const actions = {
@@ -43,10 +57,23 @@ const actions = {
   setShowFooter({ commit }, payload) {
     commit("setShowFooter", payload);
   },
+  setSideDrawerIsOpen({ commit }, payload) {
+    commit("setSideDrawerIsOpen", payload);
+  },
+  setMetaDrawerIsMini({ commit }, payload) {
+    commit("setMetaDrawerIsMini", payload);
+  },
+  toggleSideDrawerIsOpen({ commit }) {
+    commit("toggleSideDrawerIsOpen");
+  },
+  toggleMetaDrawerIsMini({ commit }) {
+    commit("toggleMetaDrawerIsMini");
+  },
 };
 
 const getters = {
   showAlert: (state) => !!state.alertText,
+  sideDrawerIsOpen: (state) => state.sideDrawerIsOpen,
 };
 
 export default {

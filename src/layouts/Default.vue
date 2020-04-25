@@ -12,6 +12,9 @@ export default {
     this.setShowAppBar(true);
     this.setShowFooter(true);
   },
-  methods: mapActions("global", ["setShowAppBar", "setShowFooter"])
+  methods: {
+    ...mapActions("app", ["setShowAppBar", "setShowFooter"]),
+    ...mapActions("decks", ["init"])
+  }
 };
 </script>

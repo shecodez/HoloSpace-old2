@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavigationDrawer />
+    <NavigationDrawer v-if="$vuetify.breakpoint.smAndDown" />
     <AppBar :show="showAppBar" />
     <v-content>
       <router-view></router-view>
@@ -29,7 +29,7 @@ export default {
   },
 
   data: () => ({}),
-  computed: mapState("global", ["showAppBar", "showFooter"])
+  computed: mapState("app", ["showAppBar", "showFooter"])
 };
 </script>
 

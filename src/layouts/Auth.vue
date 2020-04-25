@@ -58,7 +58,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("global", ["setShowAppBar", "setShowFooter"]),
+    ...mapActions("app", ["setShowAppBar", "setShowFooter"]),
     selectBgImg() {
       const css = `.page-layout, .form-div:before, .logo-div:before { background: url(${
         this.bgs[Math.floor(Math.random() * this.bgs.length)]
