@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  props: ["icon", "name", "size", "onlineStatus"],
+  props: ["icon", "name", "size"],
   computed: {
     colorByHashCode() {
       return this.intToHSL(this.getHashCode(this.name));
@@ -39,6 +39,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

@@ -7,7 +7,7 @@
     <v-divider class="ma-3 hidden-sm-and-down"></v-divider>
     <v-divider class="ma-3 hidden-md-and-up" vertical></v-divider>
 
-    <v-subheader>DECKS</v-subheader>
+    <v-subheader class="overline">Decks</v-subheader>
 
     <div class="decks d-flex d-md-block">
       <div v-for="deck in decks" :key="deck.name" class="deck pa-2">
