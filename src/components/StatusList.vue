@@ -74,6 +74,7 @@ export default {
     },
     setUserStatus(value) {
       console.log("StatusList.vue setUserStatus", value);
+      // close menu
     }
   }
 };

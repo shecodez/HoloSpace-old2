@@ -39,11 +39,17 @@ const routes = [
     meta: { requiresGuest: true },
   },
   {
-    path: "/chat",
+    path: "/d/:deck_id/:disk_id",
     name: "Chat",
     component: Chat,
     meta: { requiresAuth: true },
   },
+  // {
+  //   path: "/d/:deck_id/holo/:disk_id",
+  //   name: "HoloSpace",
+  //   component: HoloSpace,
+  //   meta: { requiresAuth: true },
+  // }
 ];
 
 const router = new VueRouter({
@@ -68,3 +74,5 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+
+// http://localhost:8080/d/h0VmIsl84msSL9BwnEvB/m9rk3tjt5l5caoJ0nefH

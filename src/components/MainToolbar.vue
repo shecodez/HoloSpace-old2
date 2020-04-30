@@ -38,5 +38,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.theme--dark {
+  &.v-toolbar {
+    background: var(--v-background-base);
+  }
+}
 </style>

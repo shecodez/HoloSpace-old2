@@ -1,13 +1,24 @@
 <template>
   <v-avatar :color="colorByHashCode" :size="size">
     <v-img v-if="icon" :src="icon"></v-img>
-    <span v-else class="headline">{{ name.charAt(0) }}</span>
+    <span v-else class="headline text--primary">{{ name.charAt(0) }}</span>
   </v-avatar>
 </template>
 
 <script>
 export default {
-  props: ["icon", "name", "size"],
+  props: {
+    icon: {
+      type: String // URL
+    },
+    name: {
+      type: String,
+      default: ""
+    },
+    size: {
+      type: String // Number
+    }
+  },
   computed: {
     colorByHashCode() {
       return this.intToHSL(this.getHashCode(this.name));
@@ -23,6 +34,8 @@ export default {
     //    75% is pastel.
     //  src: https://stackoverflow.com/a/21682946
     getHashCode: function(str) {
+      if (!str) return 0;
+
       let hash = 0;
       if (str.length === 0) return hash;
       for (let i = 0; i < str.length; i++) {
@@ -33,6 +46,8 @@ export default {
     },
 
     intToHSL: function(int) {
+      if (!int) return "hsl(0, 0%, 75%)"; //grey
+
       var shortened = int % 360;
       return `hsl(${shortened},100%,32%)`;
     }

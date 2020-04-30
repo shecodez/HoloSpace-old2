@@ -87,17 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$alpha: 0.8;
-
-$dark-1: #111111;
-$dark-2: #212121;
-$dark-3: #303030;
-$dark-4: #424242;
-
-$light-1: #fafafa;
-$light-2: #bdbdbd;
-$light-3: #e0e0e0;
-$light-4: #eeeeee;
+@import "@/assets/styles/_variables.scss";
 
 .v-card {
   height: 100%;

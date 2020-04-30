@@ -4,6 +4,7 @@ import { vuexfireMutations } from "vuexfire";
 
 import app from "./app";
 import auth from "./auth";
+import deck from "./deck";
 import decks from "./decks";
 
 Vue.use(Vuex);
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   modules: {
     app,
     auth,
+    deck,
     decks,
   },
 });

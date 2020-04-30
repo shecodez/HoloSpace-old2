@@ -41,6 +41,9 @@ export default {
 *:after {
   box-sizing: border-box;
 }
+a {
+  text-decoration: none;
+}
 html {
   overflow-y: hidden !important;
 }

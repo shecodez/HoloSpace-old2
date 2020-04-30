@@ -10,11 +10,13 @@
     <v-subheader class="overline">Decks</v-subheader>
 
     <div class="decks d-flex d-md-block">
-      <div v-for="deck in decks" :key="deck.name" class="deck pa-2">
+      <div v-for="deck in decks" :key="deck.id" class="deck pa-2">
         <v-tooltip :bottom="smAndDown" :right="!smAndDown">
           <template v-slot:activator="{ on }">
-            <div v-on="on">
-              <Avatar :icon="deck.iconUrl" :name="deck.name" size="56" />
+            <div v-on="on" :class="setActive(deck.id)">
+              <router-link :to="`/d/${deck.id}/${deck.disk_id}`">
+                <Avatar :icon="deck.iconUrl" :name="deck.name" size="56" />
+              </router-link>
             </div>
           </template>
           <span>{{ deck.name }}</span>
@@ -22,18 +24,18 @@
       </div>
     </div>
 
-    <v-btn class="add-or-join-btn ma-2" fab outlined>
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
+    <AddOrJoinDialog />
   </div>
 </template>
 
 <script>
 import Avatar from "@/components/Avatar";
+import AddOrJoinDialog from "@/components/AddOrJoinDialog";
+
 export default {
   name: "DeckList",
 
-  components: { Avatar },
+  components: { Avatar, AddOrJoinDialog },
   props: {
     decks: {
       type: Array
@@ -41,6 +43,9 @@ export default {
   },
   data: () => ({}),
   computed: {
+    currentDeckId() {
+      return this.$route.params.deck_id;
+    },
     smAndDown() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
@@ -48,6 +53,13 @@ export default {
           return true;
         default:
           return false;
+      }
+    }
+  },
+  methods: {
+    setActive(deckId) {
+      if (deckId === this.currentDeckId) {
+        return "deck--active";
       }
     }
   }
@@ -75,7 +87,7 @@ export default {
     overflow-y: hidden;
   }
 }
-.disk--active {
+.deck--active {
   .v-avatar {
     border-radius: 10%;
     &:hover {
@@ -99,12 +111,6 @@ export default {
   }
   100% {
     border-radius: 10%;
-  }
-}
-.add-or-join-btn {
-  border: dashed;
-  &:hover {
-    border: solid;
   }
 }
 </style>

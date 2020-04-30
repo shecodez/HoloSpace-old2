@@ -18,16 +18,3 @@ export default {
   state,
   actions,
 };
-
-/*
-const Deck = {
-    name: "",
-    iconUrl: "",
-    diskId: "",
-    userId: "",
-    inviteCode: "",
-    isDeleted: false,
-    createdAt: timestamp
-    updatedAt: timestamp
-}
-*/

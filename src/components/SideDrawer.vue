@@ -7,7 +7,8 @@
     floating
     permanent
   >
-    DiskList
+    <DeckToolbar />
+
     <!-- <v-expansion-panels :value="[1]" accordion multiple flat tile>
       <DiskList type="TEXT" :disks="getDisksOfType('TEXT')" />
       <DiskList type="VOIP" :disks="getDisksOfType('VOIP')" />
@@ -18,9 +19,11 @@
 
 <script>
 import { mapState } from "vuex";
+import DeckToolbar from "@/components/DeckToolbar";
 
 export default {
   name: "SideDrawer",
+  components: { DeckToolbar },
   data: () => ({}),
   computed: mapState("app", ["sideDrawerIsOpen"])
 };

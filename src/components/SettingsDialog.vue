@@ -32,7 +32,17 @@
                 </v-list>
 
                 <template v-slot:append>
-                  <v-btn color="red" block x-large tile>Logout</v-btn>
+                  <div class="px-4 py-2 d-flex align-center">
+                    <div class="text--secondary">
+                      <v-icon left>mdi-tag-outline</v-icon>
+                      <span>v{{appVer}}</span>
+                    </div>
+                    <v-spacer />
+                    <ToggleThemeBtn />
+                    <v-btn @click="logout" color="error" icon>
+                      <v-icon>mdi-logout</v-icon>
+                    </v-btn>
+                  </div>
                 </template>
               </v-navigation-drawer>
             </v-card>
@@ -41,6 +51,7 @@
           <v-col>
             <v-card tile>
               <v-card-title>{{ user.displayName }} Settings</v-card-title>
+
               <v-card-text>
                 <v-btn>change Avatar</v-btn>
               </v-card-text>
@@ -59,13 +70,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
+import ToggleThemeBtn from "@/components/ToggleThemeBtn";
 
 export default {
   name: "SettingsDialog",
-
+  components: { ToggleThemeBtn },
   data() {
     return {
+      appVer: "1.0.0", // process.env.VUE_APP_VERSION,
       dialog: false,
       item: 1,
       items: [
@@ -82,7 +95,18 @@ export default {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     };
   },
-  computed: mapState("auth", ["user"])
+  computed: {
+    ...mapState("auth", ["user"]),
+    ...mapGetters("auth", ["isLoggedIn"])
+  },
+  methods: mapActions("auth", ["logout"]),
+  watch: {
+    isLoggedIn(loggedIn) {
+      if (!loggedIn) {
+        this.$router.push("/login");
+      }
+    }
+  }
 };
 </script>
 

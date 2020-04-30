@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar class="meta-toolbar" flat>
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <div v-on="on">
@@ -37,3 +37,19 @@ export default {
   computed: mapState("auth", ["user"])
 };
 </script>
+
+
+<style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
+.theme--dark {
+  .meta-toolbar {
+    background-color: $dark-2;
+  }
+}
+.theme--light {
+  .meta-toolbar {
+    background-color: $light-2;
+  }
+}
+</style>
