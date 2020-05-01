@@ -57,6 +57,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.getDisksByDeckId(this.$route.params.deck_id);
   },
   computed: mapState("decks", ["decks"]),
   watch: {
@@ -72,6 +73,9 @@ export default {
           this.setMetaDrawerIsMini(false);
           break;
       }
+    },
+    "$route.params.deck_id": function(value) {
+      this.getDisksByDeckId(value);
     }
   },
   methods: {
@@ -81,7 +85,8 @@ export default {
       "setSideDrawerIsOpen",
       "setMetaDrawerIsMini"
     ]),
-    ...mapActions("decks", ["init"])
+    ...mapActions("decks", ["init"]),
+    ...mapActions("disks", ["getDisksByDeckId"])
   }
 };
 </script>
@@ -93,8 +98,16 @@ export default {
   height: 100%;
   box-shadow: none;
 }
+.no-overflow {
+  flex: 1;
+  min-height: 0;
+}
+.fixed {
+  max-width: 80px;
+}
 .flex-col {
   height: 100vh;
+  max-height: 100vh;
   width: 100vw;
   max-width: 100vw;
 }

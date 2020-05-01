@@ -57,8 +57,8 @@ export default {
     }
   },
   methods: {
-    setActive(deckId) {
-      if (deckId === this.currentDeckId) {
+    setActive(id) {
+      if (id === this.currentDeckId) {
         return "deck--active";
       }
     }

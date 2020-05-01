@@ -7,27 +7,55 @@
     floating
     permanent
   >
-    <DeckToolbar />
+    <template v-slot:prepend>
+      <DeckToolbar />
+    </template>
 
-    <!-- <v-expansion-panels :value="[1]" accordion multiple flat tile>
-      <DiskList type="TEXT" :disks="getDisksOfType('TEXT')" />
-      <DiskList type="VOIP" :disks="getDisksOfType('VOIP')" />
-      <DiskList type="HOLO" :disks="getDisksOfType('HOLO')" />
-    </v-expansion-panels>-->
+    <div class="scroll-content">
+      <v-expansion-panels :value="openDiskType" accordion multiple flat tile>
+        <DiskList type="TEXT" :disks="textDisks" />
+        <DiskList type="VOIP" :disks="voipDisks" />
+        <DiskList type="HOLO" :disks="holoDisks" />
+      </v-expansion-panels>
+    </div>
   </v-navigation-drawer>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import DeckToolbar from "@/components/DeckToolbar";
+import DiskList from "@/components/DiskList";
 
 export default {
   name: "SideDrawer",
-  components: { DeckToolbar },
+  components: { DeckToolbar, DiskList },
   data: () => ({}),
-  computed: mapState("app", ["sideDrawerIsOpen"])
+  // watch: {
+  //   "$route.params.disk_id": function(value) {
+  //     this.getDiskById(value);
+  //   }
+  // },
+  computed: {
+    ...mapState("app", ["sideDrawerIsOpen"]),
+    ...mapGetters("disks", ["textDisks", "voipDisks", "holoDisks"]),
+    ...mapGetters("disk", ["disk"]),
+    openDiskType() {
+      switch (this.disk.type) {
+        case "VOIP":
+          return [1];
+        case "HOLO":
+          return [2];
+        default:
+          return [0];
+      }
+    }
+  }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.scroll-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 </style>

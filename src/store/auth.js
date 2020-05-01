@@ -25,13 +25,13 @@ const mutations = {
   },
 };
 
-// const generatePin = () => {
-//   let pin = Math.round(Math.random() * 10000);
-//   if (pin < 1000) {
-//     pin += 1000;
-//   }
-//   return pin;
-// };
+const generatePin = function() {
+  let pin = Math.round(Math.random() * 10000);
+  if (pin < 1000) {
+    pin += 1000;
+  }
+  return pin;
+};
 
 const actions = {
   register({ commit }, payload) {
@@ -49,7 +49,8 @@ const actions = {
             const USER = {
               id: user.uid,
               avatarJSON: null,
-              pin: "0000", //generatePin(),
+              username: user.displayName,
+              pin: generatePin(),
               isOnline: true,
               status: "SHOW",
               isDeleted: false,

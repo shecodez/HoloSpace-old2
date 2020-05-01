@@ -64,9 +64,19 @@ export default {
   computed: mapState("deck", ["error", "loading"]),
   methods: {
     ...mapActions("deck", ["clearError", "createDeck"]),
-    submit: function() {
+    ...mapActions("app", ["setAlert"]),
+    async submit() {
       if (this.$refs.form.validate()) {
-        this.createDeck(this.deck);
+        const NEW_DECK = await this.createDeck(this.deck);
+        if (NEW_DECK) {
+          this.setAlert({
+            type: "success",
+            text: `Welcome aboard Captain! Your ${NEW_DECK.name} Deck is now online.`
+          });
+          // TODO: add action (link) to alert :
+          // <router-link :to="`/d/${NEW_DECK.id}/${NEW_DECK.disk_id}`">Open Deck</router-link>
+          this.cancel();
+        }
       }
     },
     cancel() {

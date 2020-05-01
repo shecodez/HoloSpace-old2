@@ -6,6 +6,8 @@ import app from "./app";
 import auth from "./auth";
 import deck from "./deck";
 import decks from "./decks";
+import disk from "./disk";
+import disks from "./disks";
 
 Vue.use(Vuex);
 
@@ -16,5 +18,7 @@ export default new Vuex.Store({
     auth,
     deck,
     decks,
+    disk,
+    disks,
   },
 });

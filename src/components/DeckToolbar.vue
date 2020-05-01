@@ -19,19 +19,22 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      items: [
-        { title: "Option 1", action: "" },
-        { title: "Option 2", action: "" }
-      ]
-    };
-  },
+  data: () => ({
+    items: [
+      { title: "Option 1", action: "" },
+      { title: "Option 2", action: "" }
+    ]
+  }),
   mounted() {
-    this.init(this.$route.params.deck_id);
+    this.getDeckById(this.$route.params.deck_id);
+  },
+  watch: {
+    "$route.params.deck_id": function(value) {
+      this.getDeckById(value);
+    }
   },
   computed: mapGetters("deck", ["deck"]),
-  methods: mapActions("deck", ["init"])
+  methods: mapActions("deck", ["getDeckById"])
 };
 </script>
 

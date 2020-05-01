@@ -5,16 +5,12 @@ import firebase from "@/plugins/firebase";
 const DECKS = db.collection("decks");
 
 const state = {
-  decks: [],
+  deckRef: [],
   loading: false,
   error: null,
-  dialog: false,
 };
 
 const mutations = {
-  setDeck(state, payload) {
-    state.deck = payload;
-  },
   setError(state, payload) {
     state.error = payload;
   },
@@ -24,55 +20,73 @@ const mutations = {
   setLoading(state, payload) {
     state.loading = payload;
   },
-  openDialog(state) {
-    state.dialog = true;
-  },
-  closeDialog(state) {
-    state.dialog = false;
-  },
+};
+
+const createGeneralDisk = async function(deck_id) {
+  let newDiskRef = await db.collection("disks").doc();
+
+  const GENERAL_DISK = {
+    id: newDiskRef.id,
+    name: "General", // TODO: translate to user local
+    deck_id,
+    user_id: firebase.auth().currentUser.uid,
+    is_shh: false,
+    type: "TEXT",
+    can_be_deleted: false,
+    is_deleted: false,
+    created_at: firebase.firestore.FieldValue.serverTimestamp(),
+    updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  try {
+    await newDiskRef.set(GENERAL_DISK);
+    return { error: false, disk_id: newDiskRef.id };
+  } catch (err) {
+    return { error: true, err };
+  }
 };
 
 const actions = {
-  init: firestoreAction(({ bindFirestoreRef }, id) => {
-    return bindFirestoreRef("decks", DECKS.where("id", "==", id));
+  getDeckById: firestoreAction(({ bindFirestoreRef }, id) => {
+    return bindFirestoreRef("deckRef", DECKS.where("id", "==", id));
   }),
   async createDeck({ commit }, payload) {
     commit("setLoading", true);
     commit("clearError");
 
     let newDeckRef = await DECKS.doc();
-    // TODO: create 'general' disk 1st
+    let newDiskRes = await createGeneralDisk(newDeckRef.id);
+
+    if (newDiskRes.error) {
+      commit("setError", newDiskRes.err.message);
+      commit("setLoading", false);
+      return;
+    }
 
     payload.id = newDeckRef.id;
     payload.user_id = firebase.auth().currentUser.uid;
-    payload.disk_id = "";
-    payload.isDeleted = false;
-    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+    payload.disk_id = newDiskRes.disk_id;
+    payload.is_deleted = false;
+    payload.created_at = firebase.firestore.FieldValue.serverTimestamp();
+    payload.updated_at = payload.created_at;
 
-    newDeckRef
-      .set(payload)
-      .then(() => {
-        //commit("closeDialog");
-      })
-      .catch((err) => commit("setError", err.message))
-      .finally(() => commit("setLoading", false));
+    try {
+      await newDeckRef.set(payload);
+      return payload;
+    } catch (err) {
+      commit("setError", err.message);
+      return null;
+    } finally {
+      commit("setLoading", false);
+    }
   },
-
-  openDialog({ commit }) {
-    commit("openDialog");
-  },
-  closeDialog({ commit }) {
-    commit("closeDialog");
-  },
-
   clearError({ commit }) {
     commit("clearError");
   },
 };
 
 const getters = {
-  deck: (state) => (state.decks[0] ? state.decks[0] : {}),
+  deck: (state) => (state.deckRef[0] ? state.deckRef[0] : {}),
 };
 
 export default {

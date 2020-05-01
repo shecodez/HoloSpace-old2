@@ -5,8 +5,8 @@
       <v-icon v-else class="mdi-rotate-180">mdi-wrap-disabled</v-icon>
     </v-btn>
     <v-toolbar-title>
-      {Disk Name}
-      <span class="font-weight-light">| {Disk topic}</span>
+      {{ disk.name }}
+      <span v-if="disk.topic" class="topic">{{ disk.topic }}</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>
 
@@ -27,14 +27,30 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import ThemeToggleBtn from "@/components/ToggleThemeBtn";
 
 export default {
   name: "MainToolbar",
+
   components: { ThemeToggleBtn },
-  computed: mapState("app", ["sideDrawerIsOpen"]),
-  methods: mapActions("app", ["toggleSideDrawerIsOpen"])
+  data: () => ({}),
+  mounted() {
+    this.getDiskById(this.$route.params.disk_id);
+  },
+  watch: {
+    "$route.params.disk_id": function(value) {
+      this.getDiskById(value);
+    }
+  },
+  computed: {
+    ...mapState("app", ["sideDrawerIsOpen"]),
+    ...mapGetters("disk", ["disk"])
+  },
+  methods: {
+    ...mapActions("app", ["toggleSideDrawerIsOpen"]),
+    ...mapActions("disk", ["getDiskById"])
+  }
 };
 </script>
 
@@ -43,5 +59,10 @@ export default {
   &.v-toolbar {
     background: var(--v-background-base);
   }
+}
+.topic {
+  font-weight: 100 !important;
+  border-left: 1px solid grey; // var(--v-secondary-text-color)
+  padding-left: 4px;
 }
 </style>
