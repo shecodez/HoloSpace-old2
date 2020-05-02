@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height ma-0 pa-0>
     <v-img :src="bgImg" :gradient="bgGradient">
-      <v-row no-gutters class="flex-col" :class="{ 'flex-nowrap': $vuetify.breakpoint.mdAndUp}">
+      <v-row no-gutters class="wrapper" :class="{ 'flex-nowrap': $vuetify.breakpoint.mdAndUp}">
         <v-col class="fixed" cols="12" md="auto">
           <v-card class="deck-c" tile style="min-width: 80px;">
             <DeckList :decks="decks" />
@@ -18,9 +18,10 @@
               </v-card>
             </v-col>
 
-            <v-col>
-              <v-card class="main-c" tile>
+            <v-col cols="1" class="main-col flex-grow-1 flex-shrink-0">
+              <v-card class="main-c d-flex flex-column" tile>
                 <MainToolbar />
+
                 <slot></slot>
               </v-card>
             </v-col>
@@ -98,29 +99,35 @@ export default {
   height: 100%;
   box-shadow: none;
 }
-.no-overflow {
-  flex: 1;
-  min-height: 0;
-}
-.fixed {
-  max-width: 80px;
-}
-.flex-col {
+.wrapper {
   height: 100vh;
   max-height: 100vh;
   width: 100vw;
   max-width: 100vw;
 }
+.flex-1 {
+  flex: 1;
+  min-height: 0;
+  max-width: calc(100vw - 80px);
+}
+.no-overflow {
+  overflow: hidden;
+}
+.main-col {
+  min-width: 100px;
+  max-width: 100%;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
 @media (max-width: 960px) {
   .fixed {
-    max-height: 80px;
-  }
-  .flex-col {
-    display: flex;
-    flex-direction: column;
+    max-height: 72px;
   }
   .flex-1 {
-    flex: 1;
+    max-height: calc(100vh - 72px);
+    max-width: 100vw;
   }
 }
 
