@@ -14,13 +14,13 @@
           <v-icon v-else class="mdi-rotate-180">mdi-wrap-disabled</v-icon>
         </v-btn>
 
-        <v-toolbar-title>Crew</v-toolbar-title>
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
       </v-toolbar>
     </template>
 
-    <!-- <UserList on :users="usersOnDeck" />
-    <UserList :users="usersOffline" />-->
-    deck crew (members)
+    <UserList class="on-deck" :users="usersOnDeck" on />
+    <UserList class="offline" :users="usersOffline" />
+
     <template v-slot:append>
       <UserToolbar />
     </template>
@@ -29,16 +29,40 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+
 import UserToolbar from "@/components/UserToolbar.vue";
+import UserList from "@/components/UserList.vue";
 
 export default {
   name: "MetaDrawer",
-  components: { UserToolbar },
+  components: { UserToolbar, UserList },
+  props: {
+    title: {
+      type: String
+    },
+    users: {
+      type: Array,
+      default: () => []
+    }
+  },
   data: () => ({}),
-  computed: mapState("app", ["metaDrawerIsMini"]),
+  computed: {
+    ...mapState("app", ["metaDrawerIsMini"]),
+
+    usersOnDeck() {
+      return this.users.filter(
+        user => user.is_online && user.status !== "HIDE"
+      );
+    },
+    usersOffline() {
+      return this.users.filter(
+        user => !user.is_online || user.status === "HIDE"
+      );
+    }
+  },
   methods: mapActions("app", ["toggleMetaDrawerIsMini"])
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>

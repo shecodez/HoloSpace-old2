@@ -6,10 +6,7 @@
     </v-btn>
     <v-toolbar-title>
       {{ disk.name }}
-      <span
-        v-if="disk.topic"
-        class="topic"
-      >{{ disk.topic }}ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
+      <span v-if="disk.topic" class="topic">{{ disk.topic }}</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>
 

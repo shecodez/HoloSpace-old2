@@ -3,7 +3,7 @@
     <v-list-item-group v-model="status">
       <v-list-item v-for="(item, i) in items" :key="i" @click="setUserStatus(item.name)">
         <v-list-item-icon>
-          <v-icon :color="toColor(item.name)" small>{{item.icon || 'mdi-circle'}}</v-icon>
+          <v-icon :color="toColor(item.name)" small>{{ item.icon || 'mdi-circle' }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -48,7 +48,11 @@ export default {
         description: "Do NOT Disturb",
         icon: "mdi-minus-circle"
       },
-      { name: "Hide", description: "Invisible" }
+      {
+        name: "Hide",
+        description: "Invisible",
+        icon: "mdi-close-circle-outline"
+      }
     ]
   }),
   props: {

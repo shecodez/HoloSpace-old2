@@ -1,9 +1,9 @@
 <template>
-  <div class="root">
-    <Avatar :icon="icon" :name="name" :size="size" />
+  <div class="user-avatar-div">
+    <Avatar :icon="user.icon_url" :name="user.name" :size="size" />
 
     <div class="online-status">
-      <v-icon color="grey" :size="iSize">mdi-circle</v-icon>
+      <v-icon :color="statusColor" :size="iSize">{{ statusIcon }}</v-icon>
     </div>
   </div>
 </template>
@@ -12,18 +12,57 @@
 import Avatar from "@/components/Avatar";
 
 export default {
-  props: ["icon", "name", "size", "iSize"],
-  components: { Avatar }
+  props: ["user", "size", "iSize"],
+  components: { Avatar },
+  data: () => ({
+    statuses: [
+      { name: "AWAY", color: "warning", icon: "mdi-circle" },
+      { name: "BRB", color: "warning", icon: "mdi-clock" },
+      { name: "BUSY", color: "error", icon: "mdi-circle" },
+      {
+        name: "DND",
+        color: "error",
+        icon: "mdi-minus-circle"
+      },
+      {
+        name: "HIDE",
+        color: "grey",
+        icon: "mdi-close-circle-outline"
+      },
+      { name: "SHOW", color: "success", icon: "mdi-check-circle" }
+    ]
+  }),
+  computed: {
+    statusIcon() {
+      return this.statuses.find(s => s.name === this.user.status).icon || "";
+    },
+    statusColor() {
+      return this.statuses.find(s => s.name === this.user.status).color || "";
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.root {
+.user-avatar-div {
   position: relative;
   .online-status {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: -2px;
+    bottom: -2px;
+  }
+}
+.on-deck {
+  .v-avatar {
+    filter: none;
+  }
+}
+.offline {
+  .v-avatar {
+    filter: grayscale(100%);
+    &:hover {
+      filter: none;
+    }
   }
 }
 </style>

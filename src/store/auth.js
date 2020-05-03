@@ -48,12 +48,15 @@ const actions = {
           .then(() => {
             const USER = {
               id: user.uid,
-              avatarJSON: null,
-              username: user.displayName,
-              pin: generatePin(),
-              isOnline: true,
+              icon_url: "",
+              avatar_id: "", // TODO: create avatar doc
+              name: user.displayName,
+              pin: generatePin(), // TODO: user.name and #user.pin combo must be unique
+              is_online: true,
               status: "SHOW",
-              isDeleted: false,
+              is_deleted: false,
+              created_at: firebase.firestore.FieldValue.serverTimestamp(),
+              updated_at: firebase.firestore.FieldValue.serverTimestamp(),
             };
 
             db.collection("users")

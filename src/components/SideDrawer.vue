@@ -11,13 +11,11 @@
       <DeckToolbar />
     </template>
 
-    <div class="scroll-content">
-      <v-expansion-panels :value="openDiskType" accordion multiple flat tile>
-        <DiskList type="TEXT" :disks="textDisks" />
-        <DiskList type="VOIP" :disks="voipDisks" />
-        <DiskList type="HOLO" :disks="holoDisks" />
-      </v-expansion-panels>
-    </div>
+    <v-expansion-panels :value="openDiskType" accordion multiple flat tile>
+      <DiskList type="TEXT" :disks="textDisks" />
+      <DiskList type="VOIP" :disks="voipDisks" />
+      <DiskList type="HOLO" :disks="holoDisks" />
+    </v-expansion-panels>
   </v-navigation-drawer>
 </template>
 
@@ -54,8 +52,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scroll-content {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 </style>

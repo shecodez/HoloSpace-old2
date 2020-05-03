@@ -28,7 +28,7 @@
 
             <v-col class="flex-grow-0 flex-shrink-0" cols="auto">
               <v-card class="meta-c" tile>
-                <MetaDrawer />
+                <MetaDrawer title="Crew" :users="users" />
               </v-card>
             </v-col>
           </v-row>
@@ -48,6 +48,15 @@ import SideDrawer from "@/components/SideDrawer.vue";
 
 export default {
   components: { Banner, DeckList, MainToolbar, MetaDrawer, SideDrawer },
+  props: {
+    // disks: {
+    //   type: Array
+    // }
+    users: {
+      type: Array,
+      default: () => []
+    }
+  },
   data: () => ({
     bgImg: require("@/assets/flat-mountains-1080p.jpg"),
     bgGradient: "90deg, rgba(255, 77, 77, 0.6) 10%, rgba(255, 129, 131, 0.6)"

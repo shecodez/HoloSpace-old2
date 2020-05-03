@@ -3,7 +3,7 @@
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <div v-on="on">
-          <UserAvatar :icon="user.photoUrl" :name="user.displayName" iSize="16" />
+          <UserAvatar :user="currentUser" iSize="16" />
         </div>
       </template>
 
@@ -34,7 +34,18 @@ import SettingsDialog from "@/components/SettingsDialog";
 
 export default {
   components: { UserAvatar, StatusList, OptionToggleBtns, SettingsDialog },
-  computed: mapState("auth", ["user"])
+  computed: {
+    ...mapState("auth", ["user"]),
+    currentUser() {
+      return {
+        name: this.user.displayName,
+        icon_url: this.user.photoUrl,
+        //TODO: add getUserById() to store
+        is_online: true,
+        status: "SHOW"
+      };
+    }
+  }
 };
 </script>
 

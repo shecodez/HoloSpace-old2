@@ -1,23 +1,6 @@
 <template>
   <div class="messages">
     <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
-    <h2>Messages</h2>
   </div>
 </template>
 
