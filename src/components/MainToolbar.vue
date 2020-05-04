@@ -11,9 +11,7 @@
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.breakpoint.mdAndUp">
-      <v-btn icon small tile>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      <SearchMenu />
       <v-btn icon small tile>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
@@ -28,12 +26,14 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+
+import SearchMenu from "@/components/SearchMenu";
 import ThemeToggleBtn from "@/components/ToggleThemeBtn";
 
 export default {
   name: "MainToolbar",
 
-  components: { ThemeToggleBtn },
+  components: { SearchMenu, ThemeToggleBtn },
   data: () => ({}),
   mounted() {
     this.getDiskById(this.$route.params.disk_id);

@@ -59,7 +59,9 @@ export default {
   },
   data: () => ({
     bgImg: require("@/assets/flat-mountains-1080p.jpg"),
-    bgGradient: "90deg, rgba(255, 77, 77, 0.6) 10%, rgba(255, 129, 131, 0.6)"
+    bgGradient: "90deg, rgba(255, 77, 77, 0.6) 10%, rgba(255, 129, 131, 0.6)",
+    bgGradientLight:
+      "to top right, rgba(19, 84, 122, 0.5), rgba(128, 208, 199, 0.8)"
   }),
   beforeMount() {
     this.setShowAppBar(false);

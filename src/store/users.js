@@ -12,19 +12,29 @@ const state = {
 //const mutations = {}
 
 const actions = {
-  getUsersByDeckId: firestoreAction(({ bindFirestoreRef }) => {
+  initUsersByDeckId: firestoreAction(({ bindFirestoreRef }) => {
     return bindFirestoreRef("members", USERS);
   }),
-  getUsersByDiskId: firestoreAction(({ bindFirestoreRef }) => {
+  initUsersByDiskId: firestoreAction(({ bindFirestoreRef }) => {
     return bindFirestoreRef("fellows", USERS);
   }),
-  getUsersByUserId: firestoreAction(({ bindFirestoreRef }) => {
+  initUsersByUserId: firestoreAction(({ bindFirestoreRef }) => {
     return bindFirestoreRef("friends", USERS);
   }),
+};
+
+const getters = {
+  membersById(state) {
+    return state.members.reduce((byId, member) => {
+      byId[member.id] = member;
+      return byId;
+    }, {});
+  },
 };
 
 export default {
   namespaced: true,
   state,
   actions,
+  getters,
 };

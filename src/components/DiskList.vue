@@ -99,7 +99,7 @@ export default {
   .v-treeview-node__label {
     a,
     i {
-      color: lightgrey;
+      color: #9e9e9e;
       &:hover {
         color: var(--v-primary-text-color);
       }

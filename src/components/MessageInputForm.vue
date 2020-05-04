@@ -1,6 +1,14 @@
 <template>
   <v-form ref="form" style="width: 100%;">
-    <v-text-field v-model="text" :label="label" clearable solo>
+    <v-text-field
+      @click:clear="clear"
+      v-model="text"
+      :label="label"
+      clearable
+      solo
+      required
+      :error-messages="error"
+    >
       <template v-slot:prepend-inner>
         <v-btn icon>
           <v-icon>mdi-upload-outline</v-icon>
@@ -13,7 +21,7 @@
             <v-icon>{{ icon }}</v-icon>
           </v-btn>
           <v-divider inset vertical></v-divider>
-          <v-btn icon color="primary">
+          <v-btn @click="submit" color="primary" icon :loading="loading">
             <v-icon>mdi-telegram</v-icon>
           </v-btn>
         </v-row>
@@ -23,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "MessageInputForm",
@@ -41,15 +49,41 @@ export default {
       "mdi-emoticon-tongue"
     ]
   }),
-
+  mounted() {
+    this.clearError();
+  },
   computed: {
     ...mapGetters("disk", ["disk"]),
+    ...mapState("chat", ["error", "loading"]),
     label() {
       const H = this.disk.type === "TEXT" ? "#" : "";
       return `Message ${H}${this.disk.name}`;
     },
     icon() {
       return this.icons[Math.floor(Math.random() * this.icons.length)];
+    }
+  },
+  methods: {
+    ...mapActions("chat", ["clearError", "createMessage"]),
+    async submit() {
+      let response;
+      if (this.$refs.form.validate()) {
+        if (this.data) {
+          // response = await this.updateMessage(this.disk);
+        } else {
+          response = await this.createMessage({
+            text: this.text,
+            disk_id: this.$route.params.disk_id
+          });
+        }
+      }
+      if (!response.error) {
+        this.clear();
+        this.clearError();
+      }
+    },
+    clear() {
+      this.text = "";
     }
   }
 };

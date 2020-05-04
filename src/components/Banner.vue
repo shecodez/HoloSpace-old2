@@ -1,5 +1,7 @@
 <template>
-  <v-alert :type="type" border="left" class="ma-0" dismissible text tile>{{ text }}</v-alert>
+  <v-sheet tile>
+    <v-alert :type="type" border="left" class="ma-0" dismissible text tile>{{ text }}</v-alert>
+  </v-sheet>
 </template>
 
 <script>

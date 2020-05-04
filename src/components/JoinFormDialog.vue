@@ -9,9 +9,11 @@
       <v-card-subtitle>Enter an access code to join an existing Deck. Your access code should look something like this:</v-card-subtitle>
 
       <v-card-text class="text-center">
-        <p class="secondary--text">https://holospace-app.com/join/H6x35a</p>
-        <div>or</div>
-        <p class="secondary--text">https://holospace-app.com/shh/Ya$kh2</p>
+        <p class="secondary--text">
+          https://holospace-app.com/join/H6x35a
+          <span class="grey--text d-block">or</span>
+          https://holospace-app.com/shh/Ya$kh2
+        </p>
 
         <v-alert type="error" v-if="error" text>{{ error }}</v-alert>
 

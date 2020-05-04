@@ -1,7 +1,7 @@
 <template>
   <Layout page="Chat" :users="members">
     <v-card-text class="flex-1">
-      <MessageList />
+      <MessageList :messages="filteredMessages" />
     </v-card-text>
     <v-card-actions>
       <MessageInputForm />
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 import Layout from "@/layouts/Main.vue";
 import MessageList from "@/components/MessageList";
@@ -25,19 +25,28 @@ export default {
     this.setMetaDrawerIsMini(false);
   },
   mounted() {
-    // this.getDecksByUserId()
-    this.getUsersByDeckId(this.$route.params.deck_id);
+    // this.initDecksByUserId()
+    this.initUsersByDeckId(this.$route.params.deck_id);
+    this.initChatByDiskId(this.$route.params.disk_id);
   },
-  computed: mapState("users", ["members"]),
+  computed: {
+    ...mapState("users", ["members"]),
+    //...mapState("chat", ["messages"])
+    ...mapGetters("chat", ["filteredMessages"])
+  },
   watch: {
     "$route.params.deck_id": function(value) {
-      this.getUsersByDeckId(value);
+      this.initUsersByDeckId(value);
+    },
+    "$route.params.disk_id": function(value) {
+      this.initChatByDiskId(value);
     }
   },
   methods: {
     ...mapActions("app", ["setSideDrawerIsOpen", "setMetaDrawerIsMini"]),
-    //...mapActions("decks", ["getDecksByUserId"]),
-    ...mapActions("users", ["getUsersByDeckId"]) // this.members
+    //...mapActions("decks", ["initDecksByUserId"]),
+    ...mapActions("users", ["initUsersByDeckId"]), // this.members
+    ...mapActions("chat", ["initChatByDiskId"]) // this.messages
   }
 };
 </script>

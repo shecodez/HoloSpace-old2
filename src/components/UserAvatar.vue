@@ -34,10 +34,14 @@ export default {
   }),
   computed: {
     statusIcon() {
-      return this.statuses.find(s => s.name === this.user.status).icon || "";
+      return !this.user.is_online || this.user.status === "HIDE"
+        ? "mdi-circle"
+        : this.statuses.find(s => s.name === this.user.status).icon;
     },
     statusColor() {
-      return this.statuses.find(s => s.name === this.user.status).color || "";
+      return this.user.is_online
+        ? this.statuses.find(s => s.name === this.user.status).color
+        : "grey";
     }
   }
 };
