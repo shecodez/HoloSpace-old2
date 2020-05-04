@@ -15,7 +15,7 @@
           </div>
         </template>
 
-        <UserCard :user="user" />
+        <UserCard :user="user" :me="me(user.id)" />
       </v-menu>
       <v-list-item-title class="ml-4">{{ user.name }}</v-list-item-title>
     </v-list-item>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import UserAvatar from "@/components/UserAvatar";
 import UserCard from "@/components/UserCard";
 
@@ -37,7 +39,15 @@ export default {
       default: false
     }
   },
-  components: { UserAvatar, UserCard }
+  components: { UserAvatar, UserCard },
+  computed: {
+    ...mapState("auth", ["user"])
+  },
+  methods: {
+    me(id) {
+      return id === this.user.uid;
+    }
+  }
 };
 </script>
 

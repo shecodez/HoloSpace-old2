@@ -87,6 +87,10 @@ const actions = {
 
 const getters = {
   deck: (state) => (state.deckRef[0] ? state.deckRef[0] : {}),
+  isCaptain: (state) =>
+    state.deckRef[0]
+      ? state.deckRef[0].user_id === firebase.auth().currentUser.uid
+      : false,
 };
 
 export default {

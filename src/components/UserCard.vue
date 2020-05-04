@@ -15,7 +15,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn text>Send Message</v-btn>
+      <v-btn v-if="!me" text>Send Message</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -30,6 +30,10 @@ export default {
   props: {
     user: {
       type: Object
+    },
+    me: {
+      type: Boolean,
+      default: false
     }
   }
 };

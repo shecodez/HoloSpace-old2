@@ -1,5 +1,6 @@
 <template>
   <div class="user-avatar-div">
+    <v-icon v-if="isCaptain" class="captain-stripes" color="warning" small>mdi-reorder-horizontal</v-icon>
     <Avatar :icon="user.icon_url" :name="user.name" :size="size" />
 
     <div class="online-status">
@@ -9,6 +10,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import Avatar from "@/components/Avatar";
 
 export default {
@@ -33,6 +36,7 @@ export default {
     ]
   }),
   computed: {
+    ...mapGetters("deck", ["deck"]),
     statusIcon() {
       return !this.user.is_online || this.user.status === "HIDE"
         ? "mdi-circle"
@@ -42,12 +46,20 @@ export default {
       return this.user.is_online
         ? this.statuses.find(s => s.name === this.user.status).color
         : "grey";
+    },
+    isCaptain() {
+      return this.user.id === this.deck.user_id;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.captain-stripes {
+  position: absolute;
+  z-index: 2;
+  left: -2;
+}
 .user-avatar-div {
   position: relative;
   .online-status {
