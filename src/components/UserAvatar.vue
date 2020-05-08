@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-
+//import md5 from "md5";
 import Avatar from "@/components/Avatar";
 
 export default {
@@ -49,6 +49,9 @@ export default {
     },
     isCaptain() {
       return this.user.id === this.deck.user_id;
+    },
+    gravatar() {
+      return ""; //`https://www.gravatar.com/avatar/${md5(this.user.name)}.png?s=64&d=retro`;
     }
   }
 };

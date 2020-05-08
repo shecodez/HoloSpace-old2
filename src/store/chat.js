@@ -30,8 +30,11 @@ const mutations = {
 };
 
 const actions = {
-  initChatByDiskId: firestoreAction(({ bindFirestoreRef }) => {
-    return bindFirestoreRef("messages", CHAT);
+  initChatByDiskId: firestoreAction(({ bindFirestoreRef }, id) => {
+    return bindFirestoreRef(
+      "messages",
+      CHAT.where("disk_id", "==", id).orderBy("created_at")
+    );
   }),
 
   async createMessage({ commit }, payload) {
@@ -49,6 +52,26 @@ const actions = {
 
     try {
       await newMessageRef.set(payload);
+      return { error: false };
+    } catch (err) {
+      commit("setError", err.message);
+      return { error: true };
+    } finally {
+      commit("setLoading", false);
+    }
+  },
+
+  async updateMessage({ commit }, payload) {
+    commit("setLoading", true);
+    commit("clearError");
+
+    let messageRef = await CHAT.doc(payload.id);
+
+    // payload: id, text, disk_id, user_id, is_deleted, created_at
+    payload.updated_at = firebase.firestore.FieldValue.serverTimestamp();
+
+    try {
+      await messageRef.set(payload);
       return { error: false };
     } catch (err) {
       commit("setError", err.message);

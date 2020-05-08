@@ -39,12 +39,14 @@ export default {
     ...mapGetters("disk", ["disk"]),
     openDiskType() {
       switch (this.disk.type) {
+        case "TEXT":
+          return [0];
         case "VOIP":
           return [1];
         case "HOLO":
           return [2];
         default:
-          return [0];
+          return [];
       }
     }
   }

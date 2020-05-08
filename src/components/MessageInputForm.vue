@@ -2,12 +2,14 @@
   <v-form ref="form" style="width: 100%;">
     <v-text-field
       @click:clear="clear"
+      @keydown.enter.prevent.stop="submit"
       v-model="text"
-      :label="label"
-      clearable
-      solo
-      required
       :error-messages="error"
+      :label="label"
+      autocomplete="off"
+      clearable
+      required
+      solo
     >
       <template v-slot:prepend-inner>
         <v-btn icon>
