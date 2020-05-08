@@ -26,15 +26,15 @@ export default {
     ]
   }),
   mounted() {
-    this.getDeckById(this.$route.params.deck_id);
+    this.initDeckById(this.$route.params.deck_id);
   },
   watch: {
     "$route.params.deck_id": function(value) {
-      this.getDeckById(value);
+      this.initDeckById(value);
     }
   },
   computed: mapGetters("deck", ["deck"]),
-  methods: mapActions("deck", ["getDeckById"])
+  methods: mapActions("deck", ["initDeckById"])
 };
 </script>
 

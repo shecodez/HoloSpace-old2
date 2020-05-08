@@ -47,7 +47,7 @@ const createGeneralDisk = async function(deck_id) {
 };
 
 const actions = {
-  getDeckById: firestoreAction(({ bindFirestoreRef }, id) => {
+  initDeckById: firestoreAction(({ bindFirestoreRef }, id) => {
     return bindFirestoreRef("deckRef", DECKS.where("id", "==", id));
   }),
   async createDeck({ commit }, payload) {

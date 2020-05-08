@@ -10,7 +10,7 @@ const state = {
 //const mutations = {}
 
 const actions = {
-  getDisksByDeckId: firestoreAction(({ bindFirestoreRef }, deck_id) => {
+  initDisksByDeckId: firestoreAction(({ bindFirestoreRef }, deck_id) => {
     return bindFirestoreRef("disks", DISKS.where("deck_id", "==", deck_id));
   }),
 };

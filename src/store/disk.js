@@ -23,7 +23,7 @@ const mutations = {
 };
 
 const actions = {
-  getDiskById: firestoreAction(({ bindFirestoreRef }, id) => {
+  initDiskById: firestoreAction(({ bindFirestoreRef }, id) => {
     return bindFirestoreRef("diskRef", DISKS.where("id", "==", id));
   }),
   async createDisk({ commit }, payload) {

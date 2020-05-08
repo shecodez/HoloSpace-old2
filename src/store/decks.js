@@ -8,8 +8,7 @@ const state = {
 //const mutations = {}
 
 const actions = {
-  // TODO: getDecksByUserId
-  init: firestoreAction(({ bindFirestoreRef }) => {
+  initDecksByUserId: firestoreAction(({ bindFirestoreRef }) => {
     return bindFirestoreRef("decks", db.collection("decks"));
   }),
 };

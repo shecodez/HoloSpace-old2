@@ -36,11 +36,11 @@ export default {
   components: { SearchMenu, ThemeToggleBtn },
   data: () => ({}),
   mounted() {
-    this.getDiskById(this.$route.params.disk_id);
+    this.initDiskById(this.$route.params.disk_id);
   },
   watch: {
     "$route.params.disk_id": function(value) {
-      this.getDiskById(value);
+      this.initDiskById(value);
     }
   },
   computed: {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     ...mapActions("app", ["toggleSideDrawerIsOpen"]),
-    ...mapActions("disk", ["getDiskById"])
+    ...mapActions("disk", ["initDiskById"])
   }
 };
 </script>
