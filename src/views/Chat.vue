@@ -32,12 +32,11 @@ export default {
   },
   computed: {
     ...mapState("users", ["members"]),
-    //...mapState("chat", ["messages"])
     ...mapGetters("chat", ["filteredMessages"]),
     ...mapState("auth", ["user"]),
     groupedMessages() {
-      const GROUPED_MESSAGES = [];
       if (!this.filteredMessages.length) return;
+      const GROUPED_MESSAGES = [];
 
       this.filteredMessages.forEach((message, i) => {
         let previousMessage = this.filteredMessages[i - 1];
@@ -45,21 +44,23 @@ export default {
           GROUPED_MESSAGES.push(message);
         } else {
           if (previousMessage && previousMessage.user_id === message.user_id) {
-            const MS = differenceInMilliseconds(
+            const MS_DIFF = differenceInMilliseconds(
               new Date(message.created_at.toDate()),
               new Date(previousMessage.created_at.toDate())
             );
-            if (MS <= 60 * 1000) {
+            if (MS_DIFF <= 60 * 1000) {
+              let previousGroupedMessage = GROUPED_MESSAGES[i - 1];
               GROUPED_MESSAGES.push({
-                ...message,
-                addOnMessage: true,
-                isUnderMin: true
+                addToPrev: true,
+                isSameMinute: true,
+                hideMeta: previousGroupedMessage.isSameMinute,
+                ...message
               });
             } else {
               GROUPED_MESSAGES.push({
-                ...message,
-                sameAuthor: true,
-                addOnMessage: true
+                addToPrev: true,
+                isSameAuthor: true,
+                ...message
               });
             }
           } else {

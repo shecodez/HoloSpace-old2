@@ -5,20 +5,27 @@
     style="alignItems: flex-start;"
   >
     <div v-if="!fromMe" class="mt-3 mr-3">
-      <div v-if="message.sameAuthor" class="avatar-placeholder" />
-      <UserAvatar v-else :user="authors[message.user_id]" size="40" iSize="14" />
+      <div v-if="message.addToPrev" class="avatar-placeholder" />
+      <UserAvatar v-else :user="authors[message.user_id]" size="40" />
     </div>
 
-    <div class="message" :class="message.addOnMessage ? 'message--addon' : ''">
-      <v-list-item-content class="px-3" :class="fromMe ? 'message--my' : ''">
-        <v-list-item-title v-if="!message.isUnderMin" class="message-meta">
-          <span v-if="!fromMe" class="mr-2">{{ authors[message.user_id].name }}</span>
-          <span class="caption grey--text">{{ formatDate(message.created_at) }}</span>
+    <div class="message" :class="message.addToPrev ? 'message--addon' : ''">
+      <v-list-item-content class="px-3" :class="fromMe ? 'message--self' : ''">
+        <v-list-item-title v-if="!message.addToPrev">
+          <span v-if="!fromMe" class="mr-2">
+            {{ authors[message.user_id].name }}
+          </span>
+          <span class="caption grey--text">
+            {{ formatDate(message.created_at) }}
+          </span>
         </v-list-item-title>
 
         <v-list-item-subtitle class="message-text">
-          <span v-html="message.text"></span>
-          <small class="ml-1 font-italic" v-if="message.updated_at">edited</small>
+          <v-img v-if="message.media" :src="message.media" />
+          <span v-else v-html="message.text" />
+          <small class="ml-1 font-italic" v-if="message.updated_at">
+            edited
+          </small>
         </v-list-item-subtitle>
       </v-list-item-content>
     </div>
@@ -34,32 +41,32 @@ import UserAvatar from "@/components/UserAvatar";
 export default {
   props: {
     message: {
-      type: Object
+      type: Object,
     },
     authors: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   components: { UserAvatar },
   computed: {
     ...mapState("auth", ["user"]),
     fromMe() {
       return this.message.user_id === this.user.uid;
-    }
+    },
   },
   methods: {
     formatDate(firestoreTimestamp) {
       if (!firestoreTimestamp) return;
       return formatRelative(firestoreTimestamp.toDate(), new Date());
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.message--my {
+.message--self {
   background-color: var(--v-primary-base);
 }
 .avatar-placeholder {

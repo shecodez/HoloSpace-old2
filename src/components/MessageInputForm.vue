@@ -12,9 +12,7 @@
       solo
     >
       <template v-slot:prepend-inner>
-        <v-btn icon>
-          <v-icon>mdi-upload-outline</v-icon>
-        </v-btn>
+        <UploadFileDialog />
       </template>
 
       <template v-slot:append>
@@ -34,10 +32,12 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from "vuex";
+import UploadFileDialog from "@/components/UploadFileDialog";
 
 export default {
   name: "MessageInputForm",
 
+  components: { UploadFileDialog },
   data: () => ({
     text: "",
     icons: [

@@ -11,7 +11,7 @@
       <v-menu :close-on-content-click="false" left offset-x>
         <template v-slot:activator="{ on }">
           <div class="cursor-pointer" v-on="on">
-            <UserAvatar :user="user" size="40" iSize="14" />
+            <UserAvatar :user="user" size="40" />
           </div>
         </template>
 

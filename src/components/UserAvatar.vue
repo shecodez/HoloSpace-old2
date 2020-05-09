@@ -15,7 +15,18 @@ import { mapGetters } from "vuex";
 import Avatar from "@/components/Avatar";
 
 export default {
-  props: ["user", "size", "iSize"],
+  props: {
+    user: {
+      type: Object
+    },
+    size: {
+      type: String
+    },
+    iSize: {
+      type: String,
+      default: "14"
+    }
+  },
   components: { Avatar },
   data: () => ({
     statuses: [
