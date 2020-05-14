@@ -11,7 +11,12 @@ const state = {
 
 const actions = {
   initDisksByDeckId: firestoreAction(({ bindFirestoreRef }, deck_id) => {
-    return bindFirestoreRef("disks", DISKS.where("deck_id", "==", deck_id));
+    const ID = deck_id === undefined ? null : deck_id;
+
+    return bindFirestoreRef(
+      "disks",
+      DISKS.where("deck_id", "==", ID).orderBy("name")
+    );
   }),
 };
 

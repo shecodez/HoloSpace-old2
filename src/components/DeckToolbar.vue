@@ -1,6 +1,6 @@
 <template>
   <v-toolbar class="side-toolbar" flat>
-    <v-toolbar-title>{{deck.name}}</v-toolbar-title>
+    <v-toolbar-title>{{ deck.name }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-menu offset-y>
@@ -10,31 +10,31 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="item in items" :key="item.title" @click="item.action">{{ item.title }}</v-list-item>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          @click="item.action"
+        >
+          {{ item.title }}
+        </v-list-item>
       </v-list>
     </v-menu>
   </v-toolbar>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 export default {
+  props: {
+    deck: {
+      type: Object,
+    },
+  },
   data: () => ({
     items: [
       { title: "Option 1", action: "" },
-      { title: "Option 2", action: "" }
-    ]
+      { title: "Option 2", action: "" },
+    ],
   }),
-  mounted() {
-    this.initDeckById(this.$route.params.deck_id);
-  },
-  watch: {
-    "$route.params.deck_id": function(value) {
-      this.initDeckById(value);
-    }
-  },
-  computed: mapGetters("deck", ["deck"]),
-  methods: mapActions("deck", ["initDeckById"])
 };
 </script>
 

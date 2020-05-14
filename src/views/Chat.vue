@@ -11,7 +11,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
-import { differenceInMilliseconds } from "date-fns";
+//import { differenceInMilliseconds } from "date-fns";
 
 import Layout from "@/layouts/Main.vue";
 import MessageList from "@/components/MessageList";
@@ -34,44 +34,44 @@ export default {
     ...mapState("users", ["members"]),
     ...mapGetters("chat", ["filteredMessages"]),
     ...mapState("auth", ["user"]),
-    groupedMessages() {
-      if (!this.filteredMessages.length) return;
-      const GROUPED_MESSAGES = [];
+    // groupedMessages() {
+    //   if (!this.filteredMessages.length) return;
+    //   const GROUPED_MESSAGES = [];
 
-      this.filteredMessages.forEach((message, i) => {
-        let previousMessage = this.filteredMessages[i - 1];
-        if (i === 0) {
-          GROUPED_MESSAGES.push(message);
-        } else {
-          if (previousMessage && previousMessage.user_id === message.user_id) {
-            const MS_DIFF = differenceInMilliseconds(
-              new Date(message.created_at.toDate()),
-              new Date(previousMessage.created_at.toDate())
-            );
-            if (MS_DIFF <= 60 * 1000) {
-              let previousGroupedMessage = GROUPED_MESSAGES[i - 1];
-              GROUPED_MESSAGES.push({
-                addToPrev: true,
-                isSameMinute: true,
-                hideMeta: previousGroupedMessage.isSameMinute,
-                ...message
-              });
-            } else {
-              GROUPED_MESSAGES.push({
-                addToPrev: true,
-                isSameAuthor: true,
-                ...message
-              });
-            }
-          } else {
-            GROUPED_MESSAGES.push(message);
-          }
-        }
-      });
+    //   this.filteredMessages.forEach((message, i) => {
+    //     let previousMessage = this.filteredMessages[i - 1];
+    //     if (i === 0) {
+    //       GROUPED_MESSAGES.push(message);
+    //     } else {
+    //       if (previousMessage && previousMessage.user_id === message.user_id) {
+    //         const MS_DIFF = differenceInMilliseconds(
+    //           new Date(message.created_at.toDate()),
+    //           new Date(previousMessage.created_at.toDate())
+    //         );
+    //         if (MS_DIFF <= 60 * 1000) {
+    //           let previousGroupedMessage = GROUPED_MESSAGES[i - 1];
+    //           GROUPED_MESSAGES.push({
+    //             addToPrev: true,
+    //             isSameMinute: true,
+    //             hideMeta: previousGroupedMessage.isSameMinute,
+    //             ...message,
+    //           });
+    //         } else {
+    //           GROUPED_MESSAGES.push({
+    //             addToPrev: true,
+    //             isSameAuthor: true,
+    //             ...message,
+    //           });
+    //         }
+    //       } else {
+    //         GROUPED_MESSAGES.push(message);
+    //       }
+    //     }
+    //   });
 
-      console.log("GROUPED_MESSAGES", GROUPED_MESSAGES);
-      return GROUPED_MESSAGES;
-    }
+    //   console.log("GROUPED_MESSAGES", GROUPED_MESSAGES);
+    //   return GROUPED_MESSAGES;
+    // },
   },
   watch: {
     "$route.params.deck_id": function(value) {
@@ -79,7 +79,7 @@ export default {
     },
     "$route.params.disk_id": function(value) {
       this.initChatByDiskId(value);
-    }
+    },
   },
   methods: {
     ...mapActions("app", ["setSideDrawerIsOpen", "setMetaDrawerIsMini"]),
@@ -91,12 +91,12 @@ export default {
         id: message.id,
         user_id: message.user_id,
         me: message.user_id === this.user.uid,
-        blocks: []
+        blocks: [],
       };
       MESSAGE_BLOCK.blocks.push(message);
       return MESSAGE_BLOCK;
-    }
-  }
+    },
+  },
 };
 </script>
 

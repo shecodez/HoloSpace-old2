@@ -65,6 +65,9 @@ export default {
       password: [
         v => !!v || "Password is required",
         v => (v && v.length > 6) || "Password must be at least 6 characters"
+        // v => /(?=.*[A-Z])/.test(v) || "Must have one uppercase character",
+        // v => /(?=.*\d)/.test(v) || "Must have one number",
+        // v => /([!@$%])/.test(v) || "Must have one special character [!@#$%]"
       ]
     },
     errors: {}

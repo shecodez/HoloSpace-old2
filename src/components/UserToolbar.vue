@@ -3,14 +3,14 @@
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <div v-on="on">
-          <UserAvatar :user="currentUser" iSize="16" />
+          <UserAvatar :user="me" iSize="16" />
         </div>
       </template>
 
-      <StatusList />
+      <StatusList :user="me" />
     </v-menu>
 
-    <v-toolbar-title class="mx-3">{{ user.displayName }}</v-toolbar-title>
+    <v-toolbar-title class="mx-3">{{ me.name }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-menu open-on-hover :close-on-content-click="false">
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import UserAvatar from "@/components/UserAvatar";
 import StatusList from "@/components/StatusList";
 import OptionToggleBtns from "@/components/OptionToggleBtns";
@@ -34,21 +34,14 @@ import SettingsDialog from "@/components/SettingsDialog";
 
 export default {
   components: { UserAvatar, StatusList, OptionToggleBtns, SettingsDialog },
-  computed: {
-    ...mapState("auth", ["user"]),
-    currentUser() {
-      return {
-        name: this.user.displayName,
-        icon_url: this.user.photoUrl,
-        //TODO: add getUserById() to store
-        is_online: true,
-        status: "SHOW"
-      };
-    }
-  }
+  mounted() {
+    this.initUserById();
+  },
+  computed: mapGetters("user", ["me"]),
+
+  methods: mapActions("user", ["initUserById"])
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";

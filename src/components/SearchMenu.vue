@@ -37,5 +37,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+// input[type="text"] {
+//   width: 100px;
+//   -webkit-transition: width 0.35s ease-in-out;
+//   transition: width 0.35s ease-in-out;
+// }
+// input[type="text"]:focus {
+//   width: 250px;
+// }
 </style>

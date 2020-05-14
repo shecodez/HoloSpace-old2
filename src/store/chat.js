@@ -30,10 +30,12 @@ const mutations = {
 };
 
 const actions = {
-  initChatByDiskId: firestoreAction(({ bindFirestoreRef }, id) => {
+  initChatByDiskId: firestoreAction(({ bindFirestoreRef }, disk_id) => {
+    const ID = disk_id === undefined ? null : disk_id;
+
     return bindFirestoreRef(
       "messages",
-      CHAT.where("disk_id", "==", id).orderBy("created_at")
+      CHAT.where("disk_id", "==", ID).orderBy("created_at")
     );
   }),
 

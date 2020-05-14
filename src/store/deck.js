@@ -27,7 +27,7 @@ const createGeneralDisk = async function(deck_id) {
 
   const GENERAL_DISK = {
     id: newDiskRef.id,
-    name: "General", // TODO: translate to user local
+    name: "general", // TODO: translate to user local
     deck_id,
     user_id: firebase.auth().currentUser.uid,
     is_shh: false,
@@ -47,8 +47,10 @@ const createGeneralDisk = async function(deck_id) {
 };
 
 const actions = {
-  initDeckById: firestoreAction(({ bindFirestoreRef }, id) => {
-    return bindFirestoreRef("deckRef", DECKS.where("id", "==", id));
+  initDeckById: firestoreAction(({ bindFirestoreRef }, deck_id) => {
+    const ID = deck_id === undefined ? null : deck_id;
+
+    return bindFirestoreRef("deckRef", DECKS.where("id", "==", ID));
   }),
   async createDeck({ commit }, payload) {
     commit("setLoading", true);

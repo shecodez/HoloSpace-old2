@@ -1,5 +1,5 @@
 <template>
-  <v-avatar :color="colorByHashCode" :size="size">
+  <v-avatar :color="colorByHashCode" :size="size" :left="left">
     <v-img v-if="icon" :src="icon"></v-img>
     <span v-else class="headline text--primary">{{ name.charAt(0) }}</span>
   </v-avatar>
@@ -17,6 +17,10 @@ export default {
     },
     size: {
       type: String // Number
+    },
+    left: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

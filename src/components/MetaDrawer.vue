@@ -37,32 +37,39 @@ export default {
   name: "MetaDrawer",
   components: { UserToolbar, UserList },
   props: {
-    title: {
-      type: String
-    },
     users: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data: () => ({}),
   computed: {
     ...mapState("app", ["metaDrawerIsMini"]),
+    title() {
+      switch (this.$route.name) {
+        case "DirectChat":
+        case "DirectChatHome":
+        case "Profile":
+          return "Friends";
+
+        default:
+          return "Crew";
+      }
+    },
 
     usersOnDeck() {
       return this.users.filter(
-        user => user.is_online && user.status !== "HIDE"
+        (user) => user.is_online && user.status !== "HIDE"
       );
     },
     usersOffline() {
       return this.users.filter(
-        user => !user.is_online || user.status === "HIDE"
+        (user) => !user.is_online || user.status === "HIDE"
       );
-    }
+    },
   },
-  methods: mapActions("app", ["toggleMetaDrawerIsMini"])
+  methods: mapActions("app", ["toggleMetaDrawerIsMini"]),
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

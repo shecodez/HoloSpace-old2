@@ -37,7 +37,6 @@ export default {
 
   components: { OptionToggleBtns, SettingsDialog },
   data: () => ({
-    status: null,
     items: [
       { name: "Show", description: "Available", icon: "mdi-check-circle" },
       { name: "Away" },
@@ -60,7 +59,14 @@ export default {
       type: Object
     }
   },
-  computed: mapState("app", ["metaDrawerIsMini"]),
+  computed: {
+    ...mapState("app", ["metaDrawerIsMini"]),
+    status() {
+      return this.items.findIndex(
+        s => s.name.toUpperCase() === this.user.status.toUpperCase()
+      );
+    }
+  },
   methods: {
     toColor(status) {
       switch (status.toLowerCase()) {

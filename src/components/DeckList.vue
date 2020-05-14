@@ -1,7 +1,7 @@
 <template>
   <div class="root d-flex flex-md-column">
-    <v-btn class="primary ma-2" fab>
-      <v-icon>mdi-email</v-icon>
+    <v-btn :to="routeBtn.link" class="primary ma-2" fab>
+      <v-icon>{{ routeBtn.icon }}</v-icon>
     </v-btn>
 
     <v-divider class="ma-3 hidden-sm-and-down"></v-divider>
@@ -38,13 +38,19 @@ export default {
   components: { Avatar, AddOrJoinDialog },
   props: {
     decks: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data: () => ({}),
   computed: {
     currentDeckId() {
       return this.$route.params.deck_id;
+    },
+    routeBtn() {
+      const IS_DIRECT = this.$route.name.includes("Direct"); // IE .indexOf()
+      return IS_DIRECT
+        ? { icon: "mdi-at", link: "/@me" } // mdi-mail-ru
+        : { icon: "mdi-email", link: "/direct" };
     },
     smAndDown() {
       switch (this.$vuetify.breakpoint.name) {
@@ -54,15 +60,15 @@ export default {
         default:
           return false;
       }
-    }
+    },
   },
   methods: {
     setActive(id) {
       if (id === this.currentDeckId) {
         return "deck--active";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

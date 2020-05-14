@@ -59,11 +59,12 @@ export default {
         : "grey";
     },
     isCaptain() {
-      return this.user.id === this.deck.user_id;
-    },
-    gravatar() {
-      return ""; //`https://www.gravatar.com/avatar/${md5(this.user.name)}.png?s=64&d=retro`;
+      return this.user && this.user.id === this.deck.user_id;
     }
+    // gravatar() {
+    //   const HOLO_TAG = `${this.user.name}#${this.user.pin}`
+    //   return `https://www.gravatar.com/avatar/${md5(HOLO_TAG)}.png?s=64&d=retro`;
+    // },
   }
 };
 </script>

@@ -11,11 +11,13 @@
 
     <v-card-text>
       <v-list-item-title class="mb-1">Headline 5</v-list-item-title>
-      <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+      <v-list-item-subtitle>
+        Greyhound divisely hello coldly fonwderfully
+      </v-list-item-subtitle>
     </v-card-text>
 
     <v-card-actions>
-      <v-btn v-if="!me" text>Send Message</v-btn>
+      <v-btn v-if="!me" text>DM</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -29,13 +31,13 @@ export default {
   components: { UserAvatar },
   props: {
     user: {
-      type: Object
+      type: Object,
     },
     me: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 };
 </script>
 

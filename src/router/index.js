@@ -5,6 +5,7 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Chat from "@/views/Chat.vue";
+import DirectChat from "@/views/DirectChat.vue";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -46,8 +47,26 @@ const routes = [
   },
   // {
   //   path: "/d/:deck_id/holo/:disk_id",
-  //   name: "HoloSpace",
-  //   component: HoloSpace,
+  //   name: "HoloChat",
+  //   component: HoloChat,
+  //   meta: { requiresAuth: true },
+  // }
+  {
+    path: "/direct",
+    name: "DirectChatHome",
+    component: DirectChat,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/direct/d/:disk_id",
+    name: "DirectChat",
+    component: DirectChat,
+    meta: { requiresAuth: true },
+  },
+  // {
+  //   path: "/direct/d/holo/:disk_id",
+  //   name: "DirectHoloChat",
+  //   component: DirectHoloChat,
   //   meta: { requiresAuth: true },
   // }
 ];

@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" style="width: 100%;">
+  <v-form v-if="disk.id" ref="form" style="width: 100%;">
     <v-text-field
       @click:clear="clear"
       @keydown.enter.prevent.stop="submit"
@@ -48,8 +48,8 @@ export default {
       "mdi-emoticon-happy",
       "mdi-emoticon-neutral",
       "mdi-emoticon-sad",
-      "mdi-emoticon-tongue"
-    ]
+      "mdi-emoticon-tongue",
+    ],
   }),
   mounted() {
     this.clearError();
@@ -63,7 +63,7 @@ export default {
     },
     icon() {
       return this.icons[Math.floor(Math.random() * this.icons.length)];
-    }
+    },
   },
   methods: {
     ...mapActions("chat", ["clearError", "createMessage"]),
@@ -75,7 +75,7 @@ export default {
         } else {
           response = await this.createMessage({
             text: this.text,
-            disk_id: this.$route.params.disk_id
+            disk_id: this.$route.params.disk_id,
           });
         }
       }
@@ -86,12 +86,12 @@ export default {
     },
     clear() {
       this.text = "";
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .theme--dark.v-text-field--solo {
   .v-input__control > .v-input__slot {
     background: var(--v-background-base);

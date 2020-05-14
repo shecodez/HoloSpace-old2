@@ -8,22 +8,22 @@
     </template>
 
     <v-card>
-      <v-card-title class="primary--text text-uppercase">{{ label }} {{ type }} Disk</v-card-title>
+      <v-card-title class="primary--text">{{ label }} Disk: {{ type }}</v-card-title>
 
       <v-card-text>
         <v-alert type="error" v-if="error" text>{{ error }}</v-alert>
 
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field v-model="disk.name" label="Name" :rules="r.name"></v-text-field>
-          <v-textarea v-model="disk.topic" label="Toipc" :rules="r.topic" :counter="255"></v-textarea>
-          <v-select v-model="disk.type" :items="items" :rules="r.type" label="Type"></v-select>
+          <v-textarea v-model="disk.topic" label="Topic (optional)" :rules="r.topic" :counter="255"></v-textarea>
+          <!-- <v-select v-model="disk.type" :items="items" :rules="r.type" label="Type"></v-select> -->
         </v-form>
       </v-card-text>
 
       <v-card-actions>
         <v-btn text @click="cancel">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="submit" class="primary" :loading="loading">{{ label }} Disk</v-btn>
+        <v-btn @click="submit" class="primary" :loading="isLoading">{{ label }} Disk</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -59,7 +59,7 @@ export default {
       ],
       topic: [
         v =>
-          (v && v.length < 255) || "Name cannot be longer than 255 characters"
+          (v && v.length < 255) || "Topic cannot be longer than 255 characters"
       ],
       type: [v => !!v || "Type is required"]
     }
@@ -68,7 +68,7 @@ export default {
     this.clearError();
   },
   computed: {
-    ...mapState("disk", ["error", "loading"]),
+    ...mapState("disk", ["error", "isLoading"]),
     label() {
       return this.data ? "Edit" : "Add";
     }
@@ -84,7 +84,8 @@ export default {
         } else {
           result = await this.createDisk({
             ...this.disk,
-            deck_id: this.$route.params.deck_id
+            deck_id: this.$route.params.deck_id,
+            type: this.type
           });
         }
         if (result) {
