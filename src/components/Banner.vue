@@ -1,25 +1,60 @@
 <template>
   <v-sheet tile>
-    <v-alert :type="type" border="left" class="ma-0" dismissible text tile>{{ text }}</v-alert>
+    <v-alert v-model="alert" :type="bannerType" border="left" class="mb-0" dismissible text tile>
+      <v-row align="center">
+        <v-col class="grow py-0">{{ bannerText }}</v-col>
+        <v-col v-if="isBannerAction" class="shrink py-0">
+          <v-btn @click="bannerActionFunc">{{ bannerActionText }}</v-btn>
+        </v-col>
+      </v-row>
+    </v-alert>
   </v-sheet>
 </template>
 
 <script>
+import { mapActions, mapState, mapGetters } from "vuex";
+
 export default {
   name: "Banner",
 
-  props: {
-    type: {
-      type: String
+  computed: {
+    ...mapState("app", [
+      "bannerText",
+      "bannerType",
+      "bannerActionFunc",
+      "bannerActionText"
+    ]),
+    ...mapGetters("app", ["showBanner", "isBannerAction"]),
+    alert: {
+      get() {
+        return this.showBanner;
+      },
+      set(isOpen) {
+        if (isOpen === false) {
+          this.clearBanner();
+        }
+        return isOpen;
+      }
     },
-    text: {
-      type: String,
-      default: "???"
+    icon() {
+      switch (this.bannerType) {
+        case "success":
+          return "mdi-checkbox-marked";
+        case "info":
+          return "mdi-information";
+        case "warning":
+          return "mdi-alert";
+        case "error":
+          return "mdi-close-octagon";
+        default:
+          return "mdi-cube-outline";
+      }
     }
   },
   methods: {
+    ...mapActions("app", ["clearBanner"]),
     onClose() {
-      this.$emit("dismissed");
+      this.clearBanner();
     }
   }
 };

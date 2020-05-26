@@ -1,5 +1,4 @@
 import firebase from "@/plugins/firebase";
-import db from "@/plugins/firestore";
 
 const state = {
   user: null,
@@ -25,16 +24,8 @@ const mutations = {
   },
 };
 
-const generatePin = function() {
-  let pin = Math.round(Math.random() * 10000);
-  if (pin < 1000) {
-    pin += 1000;
-  }
-  return pin;
-};
-
 const actions = {
-  register({ commit }, payload) {
+  register({ commit, dispatch }, payload) {
     commit("setLoading", true);
     commit("clearError");
     firebase
@@ -46,24 +37,12 @@ const actions = {
             displayName: payload.username,
           })
           .then(() => {
-            const USER = {
-              id: user.uid,
-              icon_url: "",
-              avatar_id: "", // TODO: create avatar doc
-              name: user.displayName,
-              pin: generatePin(), // TODO: user.name and #user.pin combo must be unique
-              is_online: true,
-              status: "SHOW",
-              is_deleted: false,
-              created_at: firebase.firestore.FieldValue.serverTimestamp(),
-              updated_at: firebase.firestore.FieldValue.serverTimestamp(),
-            };
-
-            db.collection("users")
-              .doc(USER.id)
-              .set(USER);
-
             commit("setUser", user);
+            dispatch(
+              "user/createUser",
+              { id: user.uid, name: user.displayName },
+              { root: true }
+            );
           })
           .catch((err) => commit("setError", err.message));
       })
@@ -71,7 +50,7 @@ const actions = {
       .finally(() => commit("setLoading", false));
   },
 
-  login({ commit }, payload) {
+  login({ commit, dispatch }, payload) {
     commit("setLoading", true);
     commit("clearError");
     firebase
@@ -79,32 +58,32 @@ const actions = {
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(({ user }) => {
         commit("setUser", user);
+        dispatch("user/setUserOnline", null, { root: true });
       })
       .catch((err) => commit("setError", err.message))
       .finally(() => commit("setLoading", false));
   },
 
-  getUserById({ commit }, payload) {
-    db.collection("users")
-      .doc(payload)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          console.log("store auth getUserById document data:", doc.data());
-          commit("setUser", doc.data());
-        }
-      })
-      .catch((err) => commit("setError", err.message));
-  },
-
-  logout({ commit }) {
+  async logout({ commit, dispatch }) {
+    await dispatch("user/setUserOffline", null, { root: true });
     firebase
       .auth()
       .signOut()
       .then(() => {
         commit("logoutUser");
+        dispatch(
+          "app/setAlert",
+          { type: "info", text: "You are logged out." },
+          { root: true }
+        );
       })
-      .catch((err) => console.error("store auth logout", err));
+      .catch((err) => {
+        dispatch(
+          "app/setAlert",
+          { type: "error", text: err.message },
+          { root: true }
+        );
+      });
   },
 
   resetPassword({ commit }, payload) {
@@ -136,3 +115,5 @@ export default {
   actions,
   getters,
 };
+
+//const { uid } = await auth.currentUser;

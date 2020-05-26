@@ -1,9 +1,9 @@
 <template>
   <v-list dense>
-    <v-list-item-group v-model="status">
-      <v-list-item v-for="(item, i) in items" :key="i" @click="setUserStatus(item.name)">
+    <v-list-item-group v-model="status" mandatory>
+      <v-list-item v-for="(item, i) in items" :key="i">
         <v-list-item-icon>
-          <v-icon :color="toColor(item.name)" small>{{ item.icon || 'mdi-circle' }}</v-icon>
+          <v-icon :color="getStatusColor(item.name)" small>{{ item.icon || "mdi-circle" }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -26,9 +26,8 @@
   </v-list>
 </template>
 
-
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import OptionToggleBtns from "@/components/OptionToggleBtns";
 import SettingsDialog from "@/components/SettingsDialog";
 
@@ -61,14 +60,24 @@ export default {
   },
   computed: {
     ...mapState("app", ["metaDrawerIsMini"]),
-    status() {
-      return this.items.findIndex(
-        s => s.name.toUpperCase() === this.user.status.toUpperCase()
-      );
+    status: {
+      get() {
+        return this.items.findIndex(
+          s => s.name.toUpperCase() === this.user.status.toUpperCase()
+        );
+      },
+      set(i) {
+        if (i) {
+          const NEW_STATUS = this.items[i].name.toUpperCase();
+          this.setUserStatus(NEW_STATUS);
+          this.$emit("closeMenu");
+        }
+      }
     }
   },
   methods: {
-    toColor(status) {
+    ...mapActions("user", ["setUserStatus"]),
+    getStatusColor(status) {
       switch (status.toLowerCase()) {
         case "away":
         case "brb":
@@ -81,10 +90,6 @@ export default {
         default:
           return "grey";
       }
-    },
-    setUserStatus(value) {
-      console.log("StatusList.vue setUserStatus", value);
-      // close menu
     }
   }
 };

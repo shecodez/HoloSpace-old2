@@ -11,25 +11,25 @@
       <v-card-text>
         <v-alert type="error" v-if="error" text>{{ error }}</v-alert>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-row class="ma-0">
-            <v-col>
+        <v-row class="ma-0">
+          <v-col>
+            <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field v-model="deck.name" label="Name" :rules="r.name"></v-text-field>
               <v-text-field v-model="deck.iconUrl" label="Icon URL" :rules="r.iconUrl"></v-text-field>
-            </v-col>
-            <v-col cols="auto">
-              <div class="icon-preview">
-                <Avatar :name="deck.name" :icon="deck.iconUrl" size="128" />
-              </div>
-            </v-col>
-          </v-row>
-        </v-form>
+            </v-form>
+          </v-col>
+          <v-col cols="auto">
+            <div class="icon-preview">
+              <Avatar :name="deck.name" :icon="deck.iconUrl" size="128" />
+            </div>
+          </v-col>
+        </v-row>
       </v-card-text>
 
       <v-card-actions>
-        <v-btn text @click="cancel">Cancel</v-btn>
+        <v-btn text @click="close">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="submit" class="primary" :loading="loading">Make it so #1</v-btn>
+        <v-btn @click="submit" class="primary" :loading="isLoading">Make it so #1</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -54,32 +54,40 @@ export default {
       name: [
         v => !!v || "Name is required",
         v => (v && v.length < 64) || "Name cannot be longer than 64 characters"
-      ],
-      iconUrl: []
+      ]
+      //iconUrl: []
     }
   }),
-  mounted() {
-    this.clearError();
+  watch: {
+    dialog(isOpen) {
+      if (isOpen) this.open();
+    }
   },
-  computed: mapState("deck", ["error", "loading"]),
+  computed: mapState("deck", ["error", "isLoading"]),
   methods: {
     ...mapActions("deck", ["clearError", "createDeck"]),
     ...mapActions("app", ["setAlert"]),
     async submit() {
       if (this.$refs.form.validate()) {
-        const NEW_DECK = await this.createDeck(this.deck);
-        if (NEW_DECK) {
+        let response = await this.createDeck(this.deck);
+        if (!response.error) {
           this.setAlert({
             type: "success",
-            text: `Welcome aboard Captain! Your ${NEW_DECK.name} Deck is now online.`
+            text: `Welcome aboard Captain! '${response.deck.name}' is now online.`
           });
           // TODO: add action (link) to alert :
-          // <router-link :to="`/d/${NEW_DECK.id}/${NEW_DECK.disk_id}`">Open Deck</router-link>
-          this.cancel();
+          // <router-link :to="`/d/${response.deck.id}/${response.deck.disk_id}`">Open Deck</router-link>
+          this.close();
         }
       }
     },
-    cancel() {
+    open() {
+      this.clearError();
+      if (this.$refs["form"]) {
+        this.$refs.form.resetValidation();
+      }
+    },
+    close() {
       this.clearError();
       this.$refs.form.reset();
       this.dialog = false;

@@ -7,6 +7,10 @@ const state = {
   showFooter: false,
   sideDrawerIsOpen: true,
   metaDrawerIsMini: false,
+  bannerType: "",
+  bannerText: "",
+  bannerActionFunc: () => {},
+  bannerActionText: "",
 };
 
 const mutations = {
@@ -39,6 +43,14 @@ const mutations = {
   toggleMetaDrawerIsMini(state) {
     state.metaDrawerIsMini = !state.metaDrawerIsMini;
   },
+  setBanner(state, payload) {
+    state.bannerType = payload.type; // i.e. info, error, success, warning
+    state.bannerText = payload.text;
+  },
+  clearBanner(state) {
+    state.bannerType = "";
+    state.bannerText = "";
+  },
 };
 
 const actions = {
@@ -69,11 +81,19 @@ const actions = {
   toggleMetaDrawerIsMini({ commit }) {
     commit("toggleMetaDrawerIsMini");
   },
+  setBanner({ commit }, payload) {
+    commit("setBanner", payload);
+  },
+  clearBanner({ commit }) {
+    commit("clearBanner");
+  },
 };
 
 const getters = {
   showAlert: (state) => !!state.alertText,
   sideDrawerIsOpen: (state) => state.sideDrawerIsOpen,
+  showBanner: (state) => !!state.bannerText,
+  isBannerAction: (state) => !!state.bannerActionText,
 };
 
 export default {

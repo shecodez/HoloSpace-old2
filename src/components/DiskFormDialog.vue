@@ -21,7 +21,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn text @click="cancel">Cancel</v-btn>
+        <v-btn text @click="close">Cancel</v-btn>
         <v-spacer></v-spacer>
         <v-btn @click="submit" class="primary" :loading="isLoading">{{ label }} Disk</v-btn>
       </v-card-actions>
@@ -34,6 +34,7 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "DiskFormDialog",
+
   props: {
     data: {
       type: Object
@@ -47,25 +48,22 @@ export default {
     dialog: false,
     disk: {
       name: "",
-      topic: "",
-      type: null // this.type
+      topic: ""
     },
-    items: ["TEXT", "VOIP", "HOLO"],
+    //items: ["TEXT", "VOIP", "HOLO"],
     valid: true,
     r: {
       name: [
         v => !!v || "Name is required",
         v => (v && v.length < 64) || "Name cannot be longer than 64 characters"
-      ],
-      topic: [
-        v =>
-          (v && v.length < 255) || "Topic cannot be longer than 255 characters"
-      ],
-      type: [v => !!v || "Type is required"]
+      ]
+      //topic: [v => (v && v.length < 256) || "Maximum 255 characters"],
     }
   }),
-  mounted() {
-    this.clearError();
+  watch: {
+    dialog(isOpen) {
+      if (isOpen) this.open();
+    }
   },
   computed: {
     ...mapState("disk", ["error", "isLoading"]),
@@ -78,28 +76,34 @@ export default {
     ...mapActions("app", ["setAlert"]),
     async submit() {
       if (this.$refs.form.validate()) {
-        let result;
+        let response;
         if (this.data) {
-          //result = await this.updateDisk(this.disk);
+          //response = await this.updateDisk(this.disk);
         } else {
-          result = await this.createDisk({
+          response = await this.createDisk({
             ...this.disk,
             deck_id: this.$route.params.deck_id,
             type: this.type
           });
         }
-        if (result) {
+        if (!response.error) {
           this.setAlert({
             type: "success",
-            text: `${result.name} Disk successfully created.`
+            text: `${response.disk.name} Disk successfully created.`
           });
           // TODO: add action (link) to alert :
-          // <router-link :to="`/d/${result.deck_id}/${result.id}`">Open Disk</router-link>
-          this.cancel();
+          // <router-link :to="`/d/${response.deck_id}/${response.id}`">Open Disk</router-link>
+          this.close();
         }
       }
     },
-    cancel() {
+    open() {
+      this.clearError();
+      if (this.$refs["form"]) {
+        this.$refs.form.resetValidation();
+      }
+    },
+    close() {
       this.clearError();
       this.$refs.form.reset();
       this.dialog = false;
@@ -108,5 +112,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

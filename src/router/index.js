@@ -6,13 +6,18 @@ import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Chat from "@/views/Chat.vue";
 import DirectChat from "@/views/DirectChat.vue";
+import Test from "@/views/Test.vue";
 
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "@/plugins/firebase";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/test",
+    name: "Test",
+    component: Test,
+  },
   {
     path: "/",
     name: "Home",

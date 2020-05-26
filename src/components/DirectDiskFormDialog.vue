@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="600">
+  <v-dialog v-model="dialog" persistent width="600">
     <template v-slot:activator="{ on }">
       <v-btn icon small v-on="on">
         <v-icon v-if="!data">mdi-plus</v-icon>
@@ -106,7 +106,7 @@ export default {
   }),
   watch: {
     dialog(isOpen) {
-      isOpen ? this.open() : this.close();
+      if (isOpen) this.open();
     }
   },
   computed: {
@@ -152,7 +152,7 @@ export default {
         if (this.data) {
           //result = await this.updateDirectDisk(this.disk);
         } else {
-          if (!this.disk.name.trim()) {
+          if (this.disk.name && !this.disk.name.trim()) {
             this.disk.name = this.generateName();
           }
           response = await this.createDirectDisk({
@@ -174,21 +174,20 @@ export default {
     open() {
       this.clearError();
       this.disk.user_ids.push(this.me.id);
-      const ME = this.me;
       this.users = [
         //{ header: "Me" },
         {
           disabled: true,
-          id: ME.id,
-          icon_url: ME.icon_url,
-          name: ME.name,
-          pin: ME.pin,
+          ...this.me,
           selected: true
         },
         { header: "Friends" },
         ...this.friends,
         { header: "Searched" }
       ];
+      if (this.$refs["form"]) {
+        this.$refs.form.resetValidation();
+      }
     },
     close() {
       this.clearError();

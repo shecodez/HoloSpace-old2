@@ -11,6 +11,8 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
+  name: "Snackbar",
+
   computed: {
     ...mapState("app", ["alertText", "alertType"]),
     ...mapGetters("app", ["showAlert"]),

@@ -4,9 +4,7 @@
       <v-icon v-if="!sideDrawerIsOpen">mdi-wrap-disabled</v-icon>
       <v-icon v-else class="mdi-rotate-180">mdi-wrap-disabled</v-icon>
     </v-btn>
-    <v-toolbar-title v-if="isDirect && !disk.name">
-      @{{ user.displayName }} Captain's log
-    </v-toolbar-title>
+    <v-toolbar-title v-if="isDirect && !disk.name">@{{ user.displayName }} Captain's log</v-toolbar-title>
     <v-toolbar-title v-else>
       {{ disk.name }}
       <span v-if="disk.topic" class="topic">{{ disk.topic }}</span>
@@ -44,7 +42,7 @@ export default {
   watch: {
     "$route.params.disk_id": function(value) {
       this.initDiskById(value);
-    },
+    }
   },
   computed: {
     ...mapState("auth", ["user"]),
@@ -52,12 +50,12 @@ export default {
     ...mapGetters("disk", ["disk"]),
     isDirect() {
       return this.$route.name.includes("Direct"); // IE .indexOf()
-    },
+    }
   },
   methods: {
     ...mapActions("app", ["toggleSideDrawerIsOpen"]),
-    ...mapActions("disk", ["initDiskById"]),
-  },
+    ...mapActions("disk", ["initDiskById"])
+  }
 };
 </script>
 

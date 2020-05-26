@@ -45,10 +45,10 @@ const actions = {
 
     let newMessageRef = await CHAT.doc();
 
-    // payload: text, disk_id
+    // payload: text/media, disk_id
     payload.id = newMessageRef.id;
     payload.user_id = firebase.auth().currentUser.uid;
-    payload.is_deleted = false;
+    payload.is_deleted = false; // on delete text = <i>message deleted by user_id</i>
     payload.created_at = firebase.firestore.FieldValue.serverTimestamp();
     // payload.updated_at = payload.created_at;
 
@@ -69,11 +69,11 @@ const actions = {
 
     let messageRef = await CHAT.doc(payload.id);
 
-    // payload: id, text, disk_id, user_id, is_deleted, created_at
+    // payload: text/media,
     payload.updated_at = firebase.firestore.FieldValue.serverTimestamp();
 
     try {
-      await messageRef.set(payload);
+      await messageRef.update(payload);
       return { error: false };
     } catch (err) {
       commit("setError", err.message);

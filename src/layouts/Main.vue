@@ -1,11 +1,7 @@
 <template>
   <v-container fluid fill-height ma-0 pa-0>
     <v-img :src="bgImg" :gradient="bgGradient">
-      <v-row
-        no-gutters
-        class="wrapper"
-        :class="{ 'flex-nowrap': $vuetify.breakpoint.mdAndUp }"
-      >
+      <v-row no-gutters class="wrapper" :class="{ 'flex-nowrap': $vuetify.breakpoint.mdAndUp }">
         <v-col class="fixed" cols="12" md="auto">
           <v-card class="deck-c" tile style="min-width: 80px;">
             <DeckList :decks="decks" />
@@ -13,7 +9,7 @@
         </v-col>
 
         <v-col class="flex-1 d-flex flex-column">
-          <Banner type="info" text="This is an info banner." />
+          <Banner v-if="showBanner" />
 
           <v-row class="flex-nowrap no-overflow" no-gutters>
             <v-col class="flex-grow-0 flex-shrink-1" cols="auto">
@@ -43,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import Banner from "@/components/Banner.vue";
 import DeckList from "@/components/DeckList.vue";
 import MainToolbar from "@/components/MainToolbar.vue";
@@ -55,28 +51,36 @@ export default {
   props: {
     users: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     page: {
-      type: String,
-    },
+      type: String
+    }
   },
   data: () => ({
     bgImg: require("@/assets/flat-mountains-1080p.jpg"),
     bgGradient: "90deg, rgba(255, 77, 77, 0.6) 10%, rgba(255, 129, 131, 0.6)",
     bgGradientLight:
-      "to top right, rgba(19, 84, 122, 0.5), rgba(128, 208, 199, 0.8)",
+      "to top right, rgba(19, 84, 122, 0.5), rgba(128, 208, 199, 0.8)"
   }),
   beforeMount() {
     this.setShowAppBar(false);
     this.setShowFooter(false);
   },
   mounted() {
+    if (this.user && !this.user.emailVerified) {
+      this.setBanner({
+        type: "warning",
+        text: "Please verify your email address."
+      });
+    }
     this.initDecksByUserId();
     this.initDisksByDeckId(this.$route.params.deck_id);
   },
   computed: {
+    ...mapState("auth", ["user"]),
     ...mapState("decks", ["decks"]),
+    ...mapGetters("app", ["showBanner"])
   },
   watch: {
     "$vuetify.breakpoint.name": function(value) {
@@ -94,7 +98,7 @@ export default {
     },
     "$route.params.deck_id": function(value) {
       this.initDisksByDeckId(value);
-    },
+    }
   },
   methods: {
     ...mapActions("app", [
@@ -103,10 +107,11 @@ export default {
       "setSideDrawerIsOpen",
       "setMetaDrawerIsMini",
       "setPage",
+      "setBanner"
     ]),
     ...mapActions("decks", ["initDecksByUserId"]),
-    ...mapActions("disks", ["initDisksByDeckId"]),
-  },
+    ...mapActions("disks", ["initDisksByDeckId"])
+  }
 };
 </script>
 

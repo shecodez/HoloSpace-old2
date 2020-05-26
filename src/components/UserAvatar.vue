@@ -49,13 +49,15 @@ export default {
   computed: {
     ...mapGetters("deck", ["deck"]),
     statusIcon() {
+      const USER_STATUS = (this.user.status || "").toUpperCase();
       return !this.user.is_online || this.user.status === "HIDE"
         ? "mdi-circle"
-        : this.statuses.find(s => s.name === this.user.status).icon;
+        : this.statuses.find(s => s.name === USER_STATUS).icon;
     },
     statusColor() {
+      const USER_STATUS = (this.user.status || "").toUpperCase();
       return this.user.is_online
-        ? this.statuses.find(s => s.name === this.user.status).color
+        ? this.statuses.find(s => s.name === USER_STATUS).color
         : "grey";
     },
     isCaptain() {

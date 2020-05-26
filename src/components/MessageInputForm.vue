@@ -48,8 +48,8 @@ export default {
       "mdi-emoticon-happy",
       "mdi-emoticon-neutral",
       "mdi-emoticon-sad",
-      "mdi-emoticon-tongue",
-    ],
+      "mdi-emoticon-tongue"
+    ]
   }),
   mounted() {
     this.clearError();
@@ -63,7 +63,7 @@ export default {
     },
     icon() {
       return this.icons[Math.floor(Math.random() * this.icons.length)];
-    },
+    }
   },
   methods: {
     ...mapActions("chat", ["clearError", "createMessage"]),
@@ -75,7 +75,7 @@ export default {
         } else {
           response = await this.createMessage({
             text: this.text,
-            disk_id: this.$route.params.disk_id,
+            disk_id: this.$route.params.disk_id
           });
         }
       }
@@ -86,8 +86,8 @@ export default {
     },
     clear() {
       this.text = "";
-    },
-  },
+    }
+  }
 };
 </script>
 

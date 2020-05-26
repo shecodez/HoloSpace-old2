@@ -1,13 +1,13 @@
 <template>
   <v-toolbar class="meta-toolbar" flat>
-    <v-menu :close-on-content-click="false">
+    <v-menu v-model="menu" :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <div v-on="on">
           <UserAvatar :user="me" iSize="16" />
         </div>
       </template>
 
-      <StatusList :user="me" />
+      <StatusList :user="me" @closeMenu="menu = !menu" />
     </v-menu>
 
     <v-toolbar-title class="mx-3">{{ me.name }}</v-toolbar-title>
@@ -34,6 +34,9 @@ import SettingsDialog from "@/components/SettingsDialog";
 
 export default {
   components: { UserAvatar, StatusList, OptionToggleBtns, SettingsDialog },
+  data: () => ({
+    menu: false
+  }),
   mounted() {
     this.initUserById();
   },
