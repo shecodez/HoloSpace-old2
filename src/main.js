@@ -8,6 +8,7 @@ import store from "./store";
 
 import vuetify from "./plugins/vuetify";
 import firebase from "./plugins/firebase";
+import i18n from "./plugins/i18n";
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
@@ -22,6 +23,7 @@ const INITIALIZE = () => {
       router,
       store,
       vuetify,
+      i18n,
       render: (h) => h(App),
     }).$mount("#app");
   }
