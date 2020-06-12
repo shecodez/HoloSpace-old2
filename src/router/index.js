@@ -14,11 +14,6 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/test",
-    name: "Test",
-    component: Test,
-  },
-  {
     path: "/",
     name: "Home",
     component: Home,
@@ -74,6 +69,15 @@ const routes = [
   //   component: DirectHoloChat,
   //   meta: { requiresAuth: true },
   // }
+  {
+    path: "/test/d/:deck_id",
+    name: "TestRoot",
+    component: Test,
+    children: [
+      { path: "/test/d/:deck_id/:disk_id", name: "Test", component: Test },
+    ],
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
