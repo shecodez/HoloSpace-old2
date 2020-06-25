@@ -30,7 +30,7 @@
 
 <script>
 import Avatar from "@/components/Avatar";
-import AddOrJoinDialog from "@/components/AddOrJoinDialog";
+import AddOrJoinDialog from "@/components/decks/AddOrJoinDialog";
 
 export default {
   name: "DeckList",
@@ -38,8 +38,8 @@ export default {
   components: { Avatar, AddOrJoinDialog },
   props: {
     decks: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   data: () => ({}),
   computed: {
@@ -60,15 +60,15 @@ export default {
         default:
           return false;
       }
-    },
+    }
   },
   methods: {
     setActive(id) {
       if (id === this.currentDeckId) {
         return "deck--active";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

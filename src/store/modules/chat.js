@@ -1,98 +1,102 @@
-import { firestoreAction } from "vuexfire";
-import db from "@/plugins/firestore";
 import firebase from "@/plugins/firebase";
 
-const CHAT = db.collection("messages");
+import db from "@/plugins/firestore";
+const { serverTimestamp } = firebase.firestore.FieldValue;
+
+let messagesRef = db.collection("messages");
 
 const state = {
   messages: [],
-  loading: false,
+  isLoading: false,
   error: null,
-  query: "",
+  query: null,
 };
 
 const mutations = {
-  setError(state, payload) {
-    state.error = payload;
-  },
-  clearError(state) {
-    state.error = null;
-  },
-  setLoading(state, payload) {
-    state.loading = payload;
-  },
-  setQuery(state, payload) {
-    state.query = payload;
-  },
-  clearQuery(state) {
-    state.query = "";
-  },
+  SET_CHAT: (state, payload) => (state.messages = payload),
+
+  SET_ERROR: (state, payload) => (state.error = payload),
+
+  CLEAR_ERROR: (state) => (state.error = null),
+
+  SET_IS_LOADING: (state, payload) => (state.isLoading = payload),
+
+  SET_QUERY: (state, payload) => (state.query = payload),
+
+  CLEAR_QUERY: (state) => (state.query = null),
 };
 
 const actions = {
-  initChatByDiskId: firestoreAction(({ bindFirestoreRef }, disk_id) => {
-    const ID = disk_id === undefined ? null : disk_id;
-
-    return bindFirestoreRef(
-      "messages",
-      CHAT.where("disk_id", "==", ID).orderBy("created_at")
-    );
-  }),
-
-  async createMessage({ commit }, payload) {
-    commit("setLoading", true);
-    commit("clearError");
-
-    let newMessageRef = await CHAT.doc();
-
-    // payload: text/media, disk_id
-    payload.id = newMessageRef.id;
-    payload.user_id = firebase.auth().currentUser.uid;
-    payload.is_deleted = false; // on delete text = <i>message deleted by user_id</i>
-    payload.created_at = firebase.firestore.FieldValue.serverTimestamp();
-    // payload.updated_at = payload.created_at;
-
-    try {
-      await newMessageRef.set(payload);
-      return { error: false };
-    } catch (err) {
-      commit("setError", err.message);
-      return { error: true };
-    } finally {
-      commit("setLoading", false);
-    }
-  },
-
-  async updateMessage({ commit }, payload) {
-    commit("setLoading", true);
-    commit("clearError");
-
-    let messageRef = await CHAT.doc(payload.id);
-
-    // payload: text/media,
-    payload.updated_at = firebase.firestore.FieldValue.serverTimestamp();
-
-    try {
-      await messageRef.update(payload);
-      return { error: false };
-    } catch (err) {
-      commit("setError", err.message);
-      return { error: true };
-    } finally {
-      commit("setLoading", false);
-    }
-  },
-
   clearError({ commit }) {
-    commit("clearError");
+    commit("CLEAR_ERROR");
   },
 
-  setQuery({ commit }, payload) {
-    commit("setQuery", payload);
+  setQuery({ commit }, searchTerm) {
+    commit("SET_QUERY", searchTerm);
   },
 
   clearQuery({ commit }) {
-    commit("clearQuery");
+    commit("CLEAR_QUERY");
+  },
+
+  async getChatByDiskId({ commit }, diskId = null) {
+    commit("CLEAR_ERROR");
+    try {
+      commit("SET_IS_LOADING", true);
+      let querySnapshot = await messagesRef
+        .where("disk_id", "==", diskId)
+        .orderBy("created_at")
+        .limit(100)
+        .get();
+      let messages = querySnapshot.docs.map((doc) => {
+        return doc.data();
+      });
+      commit("SET_CHAT", messages);
+      return { success: true };
+    } catch (error) {
+      commit("SET_ERROR", error.message);
+      return { success: false, error };
+    } finally {
+      commit("SET_IS_LOADING", false);
+    }
+  },
+
+  async sendMessage({ commit }, payload) {
+    commit("CLEAR_ERROR");
+    try {
+      commit("SET_IS_LOADING", true);
+      let newMessageRef = await messagesRef.doc();
+      let message = {
+        id: newMessageRef.id,
+        ...payload, // payload: text/media/markup, disk_id
+        user_id: await firebase.auth().currentUser.uid,
+        created_at: serverTimestamp(),
+      };
+      await newMessageRef.set(message);
+      //await newMessageRef.collection(payload.disk_id).doc().set(message)
+      return { success: true };
+    } catch (error) {
+      commit("SET_ERROR", error.message);
+      return { success: false, error };
+    } finally {
+      commit("SET_IS_LOADING", false);
+    }
+  },
+
+  async editMessage({ commit }, message) {
+    commit("CLEAR_ERROR");
+    try {
+      commit("SET_IS_LOADING", true);
+      let ref = await messagesRef.doc(message.id);
+      message.updated_at = serverTimestamp();
+      await ref.update(message);
+      return { success: true };
+    } catch (error) {
+      commit("SET_ERROR", error.message);
+      return { success: false, error };
+    } finally {
+      commit("SET_IS_LOADING", false);
+    }
   },
 };
 
@@ -100,7 +104,10 @@ const getters = {
   filteredMessages: (state) =>
     state.query
       ? state.messages.filter((message) => {
-          return message.text.match(new RegExp(state.query, "gi"));
+          return (
+            message.text.match(new RegExp(state.query, "gi")) ||
+            message.markup.match(new RegExp(state.query, "gi"))
+          );
         })
       : state.messages,
 };

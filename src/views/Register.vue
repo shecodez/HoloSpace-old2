@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Layout from "@/layouts/Auth.vue";
-import RegisterForm from "@/components/RegisterForm.vue";
+import Layout from "@/layouts/AuthLayout";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export default {
   name: "Register",

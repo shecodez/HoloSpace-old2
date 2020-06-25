@@ -25,8 +25,8 @@
 <script>
 import { mapState } from "vuex";
 
-import UserAvatar from "@/components/UserAvatar";
-import UserCard from "@/components/UserCard";
+import UserAvatar from "@/components/users/UserAvatar";
+import UserCard from "@/components/users/UserCard";
 
 export default {
   props: {

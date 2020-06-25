@@ -40,7 +40,7 @@
 
 <script>
 import Avatar from "@/components/Avatar";
-import DiskFormDialog from "@/components/DiskFormDialog";
+import DiskFormDialog from "@/components/disks/DiskFormDialog";
 
 export default {
   name: "DiskTree",

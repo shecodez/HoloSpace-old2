@@ -28,8 +28,9 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import OptionToggleBtns from "@/components/OptionToggleBtns";
-import SettingsDialog from "@/components/SettingsDialog";
+
+import OptionToggleBtns from "@/components/users/me/OptionToggleBtns";
+import SettingsDialog from "@/components/users/me/SettingsDialog";
 
 export default {
   name: "StatusList",
@@ -69,14 +70,14 @@ export default {
       set(i) {
         if (i) {
           const NEW_STATUS = this.items[i].name.toUpperCase();
-          this.setUserStatus(NEW_STATUS);
+          this.setMyStatus(NEW_STATUS);
           this.$emit("closeMenu");
         }
       }
     }
   },
   methods: {
-    ...mapActions("user", ["setUserStatus"]),
+    ...mapActions("me", ["setMyStatus"]),
     getStatusColor(status) {
       switch (status.toLowerCase()) {
         case "away":

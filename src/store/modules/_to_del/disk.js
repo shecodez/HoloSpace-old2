@@ -1,7 +1,7 @@
 import { firestoreAction } from "vuexfire";
 import db from "@/plugins/firestore";
 import firebase from "@/plugins/firebase";
-import subs from "./subs";
+//import subs from "./subs";
 
 const DISKS = db.collection("disks");
 
@@ -63,16 +63,16 @@ const actions = {
 
     let newDiskRef = await DISKS.doc();
 
-    try {
-      await subs.actions.batchCreateSubscriptions({
-        user_ids: payload.user_ids,
-        disk_id: newDiskRef.id,
-      });
-    } catch (err) {
-      commit("setError", err.message);
-      commit("setIsLoading", false);
-      return { error: true };
-    }
+    // try {
+    //   await subs.actions.batchCreateSubscriptions({
+    //     user_ids: payload.user_ids,
+    //     disk_id: newDiskRef.id,
+    //   });
+    // } catch (err) {
+    //   commit("setError", err.message);
+    //   commit("setIsLoading", false);
+    //   return { error: true };
+    // }
 
     // TODO: if(payload.type === 'HOLO') create new holospace doc
     payload.id = newDiskRef.id;

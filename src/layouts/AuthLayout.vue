@@ -35,6 +35,8 @@
 import { mapState, mapActions } from "vuex";
 
 export default {
+  name: "AuthLayout",
+
   data: () => ({
     bgs: [
       "https://wallpapersite.com/images/pages/pic_w/1063.jpg",

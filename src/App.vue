@@ -2,9 +2,9 @@
   <v-app>
     <NavigationDrawer v-if="$vuetify.breakpoint.smAndDown" />
     <AppBar :show="showAppBar" />
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
     <Footer :show="showFooter" />
     <Snackbar />
   </v-app>
@@ -25,11 +25,11 @@ export default {
     AppBar,
     NavigationDrawer,
     Footer,
-    Snackbar
+    Snackbar,
   },
 
   data: () => ({}),
-  computed: mapState("app", ["showAppBar", "showFooter"])
+  computed: mapState("app", ["showAppBar", "showFooter"]),
 };
 </script>
 

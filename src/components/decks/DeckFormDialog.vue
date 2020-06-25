@@ -63,14 +63,14 @@ export default {
       if (isOpen) this.open();
     }
   },
-  computed: mapState("deck", ["error", "isLoading"]),
+  computed: mapState("decks", ["error", "isLoading"]),
   methods: {
-    ...mapActions("deck", ["clearError", "createDeck"]),
+    ...mapActions("decks", ["clearError", "createDeck"]),
     ...mapActions("app", ["setAlert"]),
     async submit() {
       if (this.$refs.form.validate()) {
         let response = await this.createDeck(this.deck);
-        if (!response.error) {
+        if (response.success) {
           this.setAlert({
             type: "success",
             text: `Welcome aboard Captain! '${response.deck.name}' is now online.`

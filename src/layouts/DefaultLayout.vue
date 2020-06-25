@@ -8,6 +8,8 @@
 import { mapActions } from "vuex";
 
 export default {
+  name: "DefaultLayout",
+
   beforeMount() {
     this.setShowAppBar(true);
     this.setShowFooter(true);

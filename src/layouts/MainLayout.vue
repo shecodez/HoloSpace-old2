@@ -28,7 +28,7 @@
 
             <v-col class="flex-grow-0 flex-shrink-0" cols="auto">
               <v-card class="meta-c" tile>
-                <MetaDrawer :users="users" />
+                <MetaDrawer :users="users" :me="me" />
               </v-card>
             </v-col>
           </v-row>
@@ -40,8 +40,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+
 import Banner from "@/components/Banner.vue";
-import DeckList from "@/components/DeckList.vue";
+import DeckList from "@/components/decks/DeckList";
 import MainToolbar from "@/components/MainToolbar.vue";
 import MetaDrawer from "@/components/MetaDrawer.vue";
 import SideDrawer from "@/components/SideDrawer.vue";
@@ -67,6 +68,13 @@ export default {
     this.setShowAppBar(false);
     this.setShowFooter(false);
   },
+  created() {
+    this.getDecksByUid();
+    this.getDeckById(this.$route.params.deck_id);
+    this.getDisksByDeckId(this.$route.params.deck_id);
+    this.getDiskById(this.$route.params.disk_id);
+    this.getMeByUid();
+  },
   mounted() {
     if (this.user && !this.user.emailVerified) {
       this.setBanner({
@@ -74,13 +82,12 @@ export default {
         text: "Please verify your email address."
       });
     }
-    this.initDecksByUserId();
-    this.initDisksByDeckId(this.$route.params.deck_id);
   },
   computed: {
     ...mapState("auth", ["user"]),
+    ...mapGetters("app", ["showBanner"]),
     ...mapState("decks", ["decks"]),
-    ...mapGetters("app", ["showBanner"])
+    ...mapGetters("me", ["me"])
   },
   watch: {
     "$vuetify.breakpoint.name": function(value) {
@@ -97,7 +104,11 @@ export default {
       }
     },
     "$route.params.deck_id": function(value) {
-      this.initDisksByDeckId(value);
+      this.getDisksByDeckId(value);
+      this.getDeckById(value);
+    },
+    "$route.params.disk_id": function(value) {
+      this.getDiskById(value);
     }
   },
   methods: {
@@ -109,8 +120,9 @@ export default {
       "setPage",
       "setBanner"
     ]),
-    ...mapActions("decks", ["initDecksByUserId"]),
-    ...mapActions("disks", ["initDisksByDeckId"])
+    ...mapActions("decks", ["getDecksByUid", "getDeckById"]),
+    ...mapActions("disks", ["getDisksByDeckId", "getDiskById"]),
+    ...mapActions("me", ["getMeByUid"])
   }
 };
 </script>

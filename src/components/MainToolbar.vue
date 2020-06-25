@@ -16,8 +16,7 @@
       <v-btn icon small tile>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
-      <!-- <CalendarDialog /> -->
-      <ThemeToggleBtn />
+      <CalendarDialog />
     </template>
     <v-btn icon>
       <v-icon>mdi-dots-vertical</v-icon>
@@ -29,33 +28,27 @@
 import { mapActions, mapState, mapGetters } from "vuex";
 
 import SearchMenu from "@/components/SearchMenu";
-import ThemeToggleBtn from "@/components/ToggleThemeBtn";
+import CalendarDialog from "@/components/users/me/CalendarDialog";
 
 export default {
   name: "MainToolbar",
 
-  components: { SearchMenu, ThemeToggleBtn },
-  data: () => ({}),
-  mounted() {
-    this.initDiskById(this.$route.params.disk_id);
-  },
-  watch: {
-    "$route.params.disk_id": function(value) {
-      this.initDiskById(value);
-    }
-  },
+  components: { SearchMenu, CalendarDialog },
+  data: () => ({
+    contextMenuItems: [
+      { text: "SwitchLocale", icon: "mdi-translate" },
+      { text: "ToggleTheme", icon: "mdi-brightness-5" }
+    ]
+  }),
   computed: {
     ...mapState("auth", ["user"]),
     ...mapState("app", ["sideDrawerIsOpen"]),
-    ...mapGetters("disk", ["disk"]),
+    ...mapGetters("disks", ["disk"]),
     isDirect() {
       return this.$route.name.includes("Direct"); // IE .indexOf()
     }
   },
-  methods: {
-    ...mapActions("app", ["toggleSideDrawerIsOpen"]),
-    ...mapActions("disk", ["initDiskById"])
-  }
+  methods: mapActions("app", ["toggleSideDrawerIsOpen"])
 };
 </script>
 

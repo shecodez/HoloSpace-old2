@@ -66,13 +66,13 @@ export default {
     }
   },
   computed: {
-    ...mapState("disk", ["error", "isLoading"]),
+    ...mapState("disks", ["error", "isLoading"]),
     label() {
       return this.data ? "Edit" : "Add";
     }
   },
   methods: {
-    ...mapActions("disk", ["clearError", "createDisk"]),
+    ...mapActions("disks", ["clearError", "addNew"]),
     ...mapActions("app", ["setAlert"]),
     async submit() {
       if (this.$refs.form.validate()) {
@@ -80,13 +80,13 @@ export default {
         if (this.data) {
           //response = await this.updateDisk(this.disk);
         } else {
-          response = await this.createDisk({
+          response = await this.addNew({
             ...this.disk,
             deck_id: this.$route.params.deck_id,
             type: this.type
           });
         }
-        if (!response.error) {
+        if (response.success) {
           this.setAlert({
             type: "success",
             text: `${response.disk.name} Disk successfully created.`

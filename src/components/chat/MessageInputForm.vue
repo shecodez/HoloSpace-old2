@@ -1,11 +1,11 @@
 <template>
-  <v-form v-if="disk.id" ref="form" style="width: 100%;">
+  <v-form v-if="disk.id" ref="form" class="message-form">
     <v-text-field
       @click:clear="clear"
       @keydown.enter.prevent.stop="submit"
       v-model="text"
       :error-messages="error"
-      :label="label"
+      :label="`Message ${this.disk.name}`"
       autocomplete="off"
       clearable
       required
@@ -21,7 +21,7 @@
             <v-icon>{{ icon }}</v-icon>
           </v-btn>
           <v-divider inset vertical></v-divider>
-          <v-btn @click="submit" color="primary" icon :loading="loading">
+          <v-btn @click="submit" color="primary" icon :loading="isLoading">
             <v-icon>mdi-telegram</v-icon>
           </v-btn>
         </v-row>
@@ -32,7 +32,8 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from "vuex";
-import UploadFileDialog from "@/components/UploadFileDialog";
+
+import UploadFileDialog from "@/components/chat/UploadFileDialog";
 
 export default {
   name: "MessageInputForm",
@@ -55,31 +56,23 @@ export default {
     this.clearError();
   },
   computed: {
-    ...mapGetters("disk", ["disk"]),
-    ...mapState("chat", ["error", "loading"]),
-    label() {
-      const H = this.disk.type === "TEXT" ? "#" : "";
-      return `Message ${H}${this.disk.name}`;
-    },
+    ...mapGetters("disks", ["disk"]),
+    ...mapState("chat", ["error", "isLoading"]),
     icon() {
       return this.icons[Math.floor(Math.random() * this.icons.length)];
     }
   },
   methods: {
-    ...mapActions("chat", ["clearError", "createMessage"]),
+    ...mapActions("chat", ["clearError", "sendMessage"]),
     async submit() {
       let response;
       if (this.$refs.form.validate()) {
-        if (this.data) {
-          // response = await this.updateMessage(this.disk);
-        } else {
-          response = await this.createMessage({
-            text: this.text,
-            disk_id: this.$route.params.disk_id
-          });
-        }
+        response = await this.sendMessage({
+          text: this.text,
+          disk_id: this.$route.params.disk_id
+        });
       }
-      if (!response.error) {
+      if (response.success) {
         this.clear();
         this.clearError();
       }
@@ -92,6 +85,15 @@ export default {
 </script>
 
 <style lang="scss">
+.message-form {
+  width: 100%;
+  margin: 0 76px;
+}
+@media (max-width: 960px) {
+  .message-form {
+    margin: 0 12px;
+  }
+}
 .theme--dark.v-text-field--solo {
   .v-input__control > .v-input__slot {
     background: var(--v-background-base);

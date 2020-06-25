@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import DeckFormDialog from "@/components/DeckFormDialog";
-import JoinFormDialog from "@/components/JoinFormDialog";
+import DeckFormDialog from "@/components/decks/DeckFormDialog";
+import JoinFormDialog from "@/components/decks/JoinFormDialog";
 
 export default {
   components: { DeckFormDialog, JoinFormDialog },

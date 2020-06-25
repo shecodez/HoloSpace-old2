@@ -13,6 +13,11 @@ import firebase from "@/plugins/firebase";
 Vue.use(VueRouter);
 
 const routes = [
+  // {
+  //   path: "*",
+  //   name: "Error",
+  //   component: NotFound,
+  // },
   {
     path: "/",
     name: "Home",
@@ -53,22 +58,14 @@ const routes = [
   // }
   {
     path: "/direct",
-    name: "DirectChatHome",
+    name: "DirectChatRoot",
     component: DirectChat,
+    children: [
+      { path: "/direct/d/:disk_id", name: "DirectChat", component: DirectChat },
+      //{ path: "/direct/d/holo/:disk_id", name: "DirectHoloChat", component: DirectHoloChat },
+    ],
     meta: { requiresAuth: true },
   },
-  {
-    path: "/direct/d/:disk_id",
-    name: "DirectChat",
-    component: DirectChat,
-    meta: { requiresAuth: true },
-  },
-  // {
-  //   path: "/direct/d/holo/:disk_id",
-  //   name: "DirectHoloChat",
-  //   component: DirectHoloChat,
-  //   meta: { requiresAuth: true },
-  // }
   {
     path: "/test/d/:deck_id",
     name: "TestRoot",

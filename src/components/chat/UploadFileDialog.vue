@@ -8,9 +8,7 @@
 
     <v-card>
       <!-- TODO: allow Upload File not just media -->
-      <v-card-title class="primary--text text-uppercase">
-        Upload Media
-      </v-card-title>
+      <v-card-title class="primary--text text-uppercase">Upload Media</v-card-title>
 
       <v-card-text>
         <v-alert type="error" v-if="error" text>{{ error }}</v-alert>
@@ -31,9 +29,7 @@
       <v-card-actions>
         <v-btn text @click="cancel">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="submit" class="primary" :loading="isLoading"
-          >Upload</v-btn
-        >
+        <v-btn @click="submit" class="primary" :loading="isLoading">Upload</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -49,28 +45,28 @@ export default {
     dialog: false,
     files: [],
     rules: [
-      (v) => !v || v.size < 5000000 || "File size should be less than 5 MB!",
-    ],
+      v => !v || v.size < 5000000 || "File size should be less than 5 MB!"
+    ]
   }),
   computed: {
     ...mapState("file", ["error", "isLoading", "progress"]),
     percentUploaded() {
       return Math.round(this.progress);
-    },
+    }
   },
   mounted() {
     this.clearError();
   },
   methods: {
     ...mapActions("file", ["clearError", "uploadFile"]),
-    ...mapActions("chat", ["createMessage"]),
+    ...mapActions("chat", ["sendMessage"]),
     async submit() {
       let uploadResponse = await this.uploadFile(this.files);
       let messageResponse;
       if (!uploadResponse.error) {
-        messageResponse = await this.createMessage({
+        messageResponse = await this.sendMessage({
           media: uploadResponse.downloadURL,
-          disk_id: this.$route.params.disk_id,
+          disk_id: this.$route.params.disk_id
         });
       }
       if (!messageResponse.error) {
@@ -81,8 +77,8 @@ export default {
       this.clearError();
       this.files = [];
       this.dialog = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

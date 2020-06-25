@@ -13,9 +13,9 @@
 import { mapActions, mapState, mapGetters } from "vuex";
 //import { differenceInMilliseconds } from "date-fns";
 
-import Layout from "@/layouts/Main.vue";
-import MessageList from "@/components/MessageList";
-import MessageInputForm from "@/components/MessageInputForm";
+import Layout from "@/layouts/MainLayout";
+import MessageList from "@/components/chat/MessageList";
+import MessageInputForm from "@/components/chat/MessageInputForm";
 
 export default {
   name: "Chat",
@@ -25,79 +25,77 @@ export default {
     this.setSideDrawerIsOpen(true);
     this.setMetaDrawerIsMini(false);
   },
-  mounted() {
-    // this.initDecksByUserId()
-    this.initUsersByDeckId(this.$route.params.deck_id);
-    this.initChatByDiskId(this.$route.params.disk_id);
+  created() {
+    this.getMbrsByDeckId(this.$route.params.deck_id);
+    this.getChatByDiskId(this.$route.params.disk_id);
   },
   computed: {
     ...mapState("users", ["members"]),
     ...mapGetters("chat", ["filteredMessages"]),
-    ...mapState("auth", ["user"]),
-    // groupedMessages() {
-    //   if (!this.filteredMessages.length) return;
-    //   const GROUPED_MESSAGES = [];
-
-    //   this.filteredMessages.forEach((message, i) => {
-    //     let previousMessage = this.filteredMessages[i - 1];
-    //     if (i === 0) {
-    //       GROUPED_MESSAGES.push(message);
-    //     } else {
-    //       if (previousMessage && previousMessage.user_id === message.user_id) {
-    //         const MS_DIFF = differenceInMilliseconds(
-    //           new Date(message.created_at.toDate()),
-    //           new Date(previousMessage.created_at.toDate())
-    //         );
-    //         if (MS_DIFF <= 60 * 1000) {
-    //           let previousGroupedMessage = GROUPED_MESSAGES[i - 1];
-    //           GROUPED_MESSAGES.push({
-    //             addToPrev: true,
-    //             isSameMinute: true,
-    //             hideMeta: previousGroupedMessage.isSameMinute,
-    //             ...message,
-    //           });
-    //         } else {
-    //           GROUPED_MESSAGES.push({
-    //             addToPrev: true,
-    //             isSameAuthor: true,
-    //             ...message,
-    //           });
-    //         }
-    //       } else {
-    //         GROUPED_MESSAGES.push(message);
-    //       }
-    //     }
-    //   });
-
-    //   console.log("GROUPED_MESSAGES", GROUPED_MESSAGES);
-    //   return GROUPED_MESSAGES;
-    // },
+    ...mapState("auth", ["user"])
   },
   watch: {
     "$route.params.deck_id": function(value) {
-      this.initUsersByDeckId(value);
+      this.getMbrsByDeckId(value);
     },
     "$route.params.disk_id": function(value) {
-      this.initChatByDiskId(value);
-    },
+      this.getChatByDiskId(value);
+    }
   },
   methods: {
     ...mapActions("app", ["setSideDrawerIsOpen", "setMetaDrawerIsMini"]),
-    //...mapActions("decks", ["initDecksByUserId"]),
-    ...mapActions("users", ["initUsersByDeckId"]), // this.members
-    ...mapActions("chat", ["initChatByDiskId"]), // this.messages
+    ...mapActions("users", ["getMbrsByDeckId"]),
+    ...mapActions("chat", ["getChatByDiskId"]),
     messageBlock(message) {
       const MESSAGE_BLOCK = {
         id: message.id,
         user_id: message.user_id,
         me: message.user_id === this.user.uid,
-        blocks: [],
+        blocks: []
       };
       MESSAGE_BLOCK.blocks.push(message);
       return MESSAGE_BLOCK;
-    },
-  },
+    }
+  }
 };
+// groupedMessages() {
+//   if (!this.filteredMessages.length) return;
+//   const GROUPED_MESSAGES = [];
+
+//   this.filteredMessages.forEach((message, i) => {
+//     let previousMessage = this.filteredMessages[i - 1];
+//     if (i === 0) {
+//       GROUPED_MESSAGES.push(message);
+//     } else {
+//       if (previousMessage && previousMessage.user_id === message.user_id) {
+//         const MS_DIFF = differenceInMilliseconds(
+//           new Date(message.created_at.toDate()),
+//           new Date(previousMessage.created_at.toDate())
+//         );
+//         if (MS_DIFF <= 60 * 1000) {
+//           let previousGroupedMessage = GROUPED_MESSAGES[i - 1];
+//           GROUPED_MESSAGES.push({
+//             addToPrev: true,
+//             isSameMinute: true,
+//             hideMeta: previousGroupedMessage.isSameMinute,
+//             ...message,
+//           });
+//         } else {
+//           GROUPED_MESSAGES.push({
+//             addToPrev: true,
+//             isSameAuthor: true,
+//             ...message,
+//           });
+//         }
+//       } else {
+//         GROUPED_MESSAGES.push(message);
+//       }
+//     }
+//   });
+
+//   console.log("GROUPED_MESSAGES", GROUPED_MESSAGES);
+//   return GROUPED_MESSAGES;
+// },
 </script>
 
 <style lang="scss" scoped>
@@ -106,3 +104,4 @@ export default {
   overflow: hidden;
 }
 </style>
+

@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Layout from "@/layouts/Auth.vue";
-import LoginForm from "@/components/LoginForm.vue";
+import Layout from "@/layouts/AuthLayout";
+import LoginForm from "@/components/auth/LoginForm";
 
 export default {
   name: "Login",

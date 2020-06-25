@@ -29,7 +29,7 @@
       <v-btn to="/login" outlined rounded>Login</v-btn>
     </span>
     <ToggleThemeBtn />
-    <LocalSelect />
+    <SwitchLocale />
   </v-app-bar>
 </template>
 
@@ -37,12 +37,12 @@
 import { mapActions, mapState, mapGetters } from "vuex";
 
 import ToggleThemeBtn from "@/components/ToggleThemeBtn";
-import LocalSelect from "@/components/LocalSelect";
+import SwitchLocale from "@/components/SwitchLocale";
 
 export default {
   name: "AppBar",
 
-  components: { ToggleThemeBtn, LocalSelect },
+  components: { ToggleThemeBtn, SwitchLocale },
   props: ["show"],
   data: () => ({}),
   computed: {

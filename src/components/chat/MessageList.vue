@@ -12,7 +12,7 @@
 <script>
 import { mapGetters } from "vuex";
 
-import MessageListItem from "@/components/MessageListItem";
+import MessageListItem from "@/components/chat/MessageListItem";
 
 export default {
   props: {
@@ -42,26 +42,5 @@ export default {
 .messages {
   height: 100%;
   overflow-y: auto;
-}
-.message--my {
-  background-color: var(--v-primary-base);
-}
-
-.message-block {
-  margin-bottom: 8px;
-}
-.message {
-  background-color: rgba($dark-4, $alpha);
-  margin-top: 16px;
-  max-width: 85%;
-  .message-meta > span {
-    margin-right: 8px;
-  }
-  .message-text {
-    white-space: normal;
-  }
-}
-.message--addon {
-  margin-top: 4px;
 }
 </style>

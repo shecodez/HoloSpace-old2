@@ -26,23 +26,19 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import UserAvatar from "@/components/UserAvatar";
-import StatusList from "@/components/StatusList";
-import OptionToggleBtns from "@/components/OptionToggleBtns";
-import SettingsDialog from "@/components/SettingsDialog";
+import { mapGetters } from "vuex";
+
+import UserAvatar from "@/components/users/UserAvatar";
+import StatusList from "@/components/users/me/StatusList";
+import OptionToggleBtns from "@/components/users/me/OptionToggleBtns";
+import SettingsDialog from "@/components/users/me/SettingsDialog";
 
 export default {
   components: { UserAvatar, StatusList, OptionToggleBtns, SettingsDialog },
   data: () => ({
     menu: false
   }),
-  mounted() {
-    this.initUserById();
-  },
-  computed: mapGetters("user", ["me"]),
-
-  methods: mapActions("user", ["initUserById"])
+  computed: mapGetters("me", ["me"])
 };
 </script>
 

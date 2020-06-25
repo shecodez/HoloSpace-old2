@@ -39,7 +39,7 @@ const actions = {
           .then(() => {
             commit("setUser", user);
             dispatch(
-              "user/createUser",
+              "users/createUser",
               { id: user.uid, name: user.displayName },
               { root: true }
             );
@@ -58,14 +58,14 @@ const actions = {
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(({ user }) => {
         commit("setUser", user);
-        dispatch("user/setUserOnline", null, { root: true });
+        dispatch("me/setMeOnline", null, { root: true });
       })
       .catch((err) => commit("setError", err.message))
       .finally(() => commit("setLoading", false));
   },
 
   async logout({ commit, dispatch }) {
-    await dispatch("user/setUserOffline", null, { root: true });
+    await dispatch("me/setMeOffline", null, { root: true });
     firebase
       .auth()
       .signOut()

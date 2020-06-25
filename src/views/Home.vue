@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import Layout from "@/layouts/Default.vue";
+import Layout from "@/layouts/DefaultLayout";
 
 export default {
   name: "Home",

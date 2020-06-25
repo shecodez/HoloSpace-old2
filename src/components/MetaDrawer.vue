@@ -22,7 +22,7 @@
     <UserList class="offline" :users="usersOffline" />
 
     <template v-slot:append>
-      <UserToolbar />
+      <UserToolbar :me="me" />
     </template>
   </v-navigation-drawer>
 </template>
@@ -30,8 +30,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
-import UserToolbar from "@/components/UserToolbar.vue";
-import UserList from "@/components/UserList.vue";
+import UserToolbar from "@/components/users/me/UserToolbar";
+import UserList from "@/components/users/UserList";
 
 export default {
   name: "MetaDrawer",
@@ -39,8 +39,11 @@ export default {
   props: {
     users: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
+    me: {
+      type: Object
+    }
   },
   data: () => ({}),
   computed: {
@@ -59,16 +62,16 @@ export default {
 
     usersOnDeck() {
       return this.users.filter(
-        (user) => user.is_online && user.status !== "HIDE"
+        user => user.is_online && user.status !== "HIDE"
       );
     },
     usersOffline() {
       return this.users.filter(
-        (user) => !user.is_online || user.status === "HIDE"
+        user => !user.is_online || user.status === "HIDE"
       );
-    },
+    }
   },
-  methods: mapActions("app", ["toggleMetaDrawerIsMini"]),
+  methods: mapActions("app", ["toggleMetaDrawerIsMini"])
 };
 </script>
 

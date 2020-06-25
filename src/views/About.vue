@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import Layout from "@/layouts/Default.vue";
+import Layout from "@/layouts/DefaultLayout";
 import HelloI18n from "@/components/HelloI18n";
 
 export default {
   name: "About",
-  components: { Layout, HelloI18n },
+  components: { Layout, HelloI18n }
 };
 </script>

@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" fullscreen>
     <template v-slot:activator="{ on }">
       <v-btn icon v-on="on">
-        <v-icon>mdi-triangle-outline</v-icon>
+        <v-icon>mdi-account-settings-outline</v-icon>
       </v-btn>
     </template>
 
@@ -71,6 +71,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+
 import ToggleThemeBtn from "@/components/ToggleThemeBtn";
 
 export default {
@@ -78,7 +79,7 @@ export default {
   components: { ToggleThemeBtn },
   data() {
     return {
-      appVer: "1.0.0", // process.env.VUE_APP_VERSION,
+      appVer: process.env.VUE_APP_VERSION,
       dialog: false,
       item: 1,
       items: [

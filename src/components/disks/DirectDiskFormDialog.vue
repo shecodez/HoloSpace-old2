@@ -74,7 +74,7 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 
 import Avatar from "@/components/Avatar";
-import SearchUsers from "@/components/SearchUsers";
+import SearchUsers from "@/components/users/SearchUsers";
 
 export default {
   name: "DirectDiskFormDialog",
@@ -111,14 +111,14 @@ export default {
   },
   computed: {
     ...mapState("users", ["friends"]),
-    ...mapState("disk", ["error", "isLoading"]),
-    ...mapGetters("user", ["me"]),
+    ...mapState("disks", ["error", "isLoading"]),
+    ...mapGetters("me", ["me"]),
     label() {
       return this.data ? "Edit" : "Add";
     }
   },
   methods: {
-    ...mapActions("disk", ["clearError", "createDirectDisk"]),
+    ...mapActions("disks", ["clearError", "addNewDirect"]),
     ...mapActions("app", ["setAlert"]),
     remove(item) {
       const IDX = this.disk.user_ids.indexOf(item.id);
@@ -155,12 +155,12 @@ export default {
           if (this.disk.name && !this.disk.name.trim()) {
             this.disk.name = this.generateName();
           }
-          response = await this.createDirectDisk({
+          response = await this.addNewDirect({
             ...this.disk,
             type: this.type
           });
         }
-        if (!response.error) {
+        if (response.success) {
           this.setAlert({
             type: "success",
             text: `${response.disk.name} Direct Disk successfully created.`

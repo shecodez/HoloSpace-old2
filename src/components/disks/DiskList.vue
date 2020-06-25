@@ -15,20 +15,16 @@
         :active="[currentDiskId]"
         :active-class="isDirect ? 'disk--active direct' : 'disk--active'"
         :items="disks"
-        :load-children="getUsersOnDisk"
+        :load-children="getPresence"
         color="primary--text"
         dense
       >
         <template v-slot:label="{ item }">
-          <span v-if="item.deck_id">
-            <router-link :to="diskRouteTo(item)">
-              <v-avatar v-if="isDirect" class="group-avatar" size="36">
-                <v-icon>mdi-account-group</v-icon>
-              </v-avatar>
-
-              <v-icon v-if="item.type === 'TEXT'" small>mdi-pound</v-icon>
-              <span style="verticalAlign: middle;">{{ item.name }}</span>
-            </router-link>
+          <span v-if="item.type">
+            <v-avatar v-if="isDirect" class="group-avatar" size="36">
+              <v-icon>mdi-account-group</v-icon>
+            </v-avatar>
+            <router-link :to="linkTo(item)">{{ item.name }}</router-link>
           </span>
           <span v-else>
             <Avatar :icon="item.avatar_url" :name="item.name" size="24" />
@@ -37,7 +33,7 @@
         </template>
 
         <template v-slot:append="{ item }">
-          <div v-if="item.deck_id" class="actions">
+          <div v-if="item.type" class="actions">
             <DirectDiskFormDialog v-if="isDirect" :data="item" :type="type" />
             <DiskFormDialog v-else :data="item" :type="type" />
           </div>
@@ -50,10 +46,8 @@
 
 <script>
 import Avatar from "@/components/Avatar";
-import DiskFormDialog from "@/components/DiskFormDialog";
-import DirectDiskFormDialog from "@/components/DirectDiskFormDialog";
-
-const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
+import DiskFormDialog from "@/components/disks/DiskFormDialog";
+import DirectDiskFormDialog from "@/components/disks/DirectDiskFormDialog";
 
 export default {
   name: "DiskList",
@@ -64,28 +58,19 @@ export default {
     },
     type: {
       type: String
-    },
-    isDirect: {
-      type: Boolean,
-      default: false
     }
   },
   data: () => ({}),
   computed: {
     currentDiskId() {
       return this.$route.params.disk_id;
+    },
+    isDirect() {
+      return this.$route.name.includes("Direct"); // IE .indexOf()
     }
   },
   methods: {
-    async getUsersOnDisk(disk) {
-      await pause(1500);
-
-      return fetch("https://jsonplaceholder.typicode.com/users?_limit=3")
-        .then(res => res.json())
-        .then(json => disk.children.push(...json))
-        .catch(err => console.warn(err));
-    },
-    diskRouteTo(disk) {
+    linkTo(disk) {
       const IS_HOLO = disk.type === "HOLO";
 
       if (this.isDirect) {
@@ -95,6 +80,20 @@ export default {
         // HOLO ? ~/d/:deck_id/:disk_id : `~/d/:deck_id/:disk_id
         return `/d/${disk.deck_id}${IS_HOLO ? "/holo/" : "/"}${disk.id}`;
       }
+    },
+    async getPresence(onDisk) {
+      let users = [
+        { id: 1, name: "Lenne Graham" },
+        { id: 2, name: "Erbom Nells" },
+        { id: 3, name: "Baunch Clementine" }
+      ];
+      let promise = new Promise(function(resolve) {
+        setTimeout(() => resolve(users), 1500);
+      });
+
+      return promise
+        .then(users => onDisk.children.push(...users))
+        .catch(err => console.error(err));
     }
   }
   // TODO: generate group avatar
@@ -109,9 +108,11 @@ export default {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+
   .v-treeview > .v-treeview-node > :first-child {
-    padding-left: 24px !important;
+    padding-left: 30px !important;
   }
+
   .disk--active,
   .v-treeview > .v-treeview-node > :first-child:hover {
     box-shadow: inset 4px 0 0 0 var(--v-primary-base);
@@ -120,25 +121,19 @@ export default {
       rgba(66, 66, 66, 1),
       rgba(66, 66, 66, 0)
     );
+    a,
+    i {
+      color: var(--v-primary-text-color);
+    }
   }
   .v-treeview-node__label {
     a,
     i {
       color: #9e9e9e;
-      &:hover {
-        color: var(--v-primary-text-color);
-      }
     }
-  }
-  .group-avatar {
-    display: none;
   }
 
   .disk--active {
-    a,
-    i {
-      color: var(--v-primary-text-color);
-    }
     &::after {
       content: "";
       display: block;
@@ -147,6 +142,12 @@ export default {
       position: absolute;
       right: 0;
     }
+
+    a,
+    i {
+      color: var(--v-primary-text-color);
+    }
+
     .group-avatar {
       margin: 8px 8px 8px 0;
       display: inline-block;
@@ -158,6 +159,15 @@ export default {
       border: 26px solid transparent;
       border-right-color: rgba(200, 200, 200, 0.1);
     }
+  }
+
+  // .group-avatar {
+  //   display: none;
+  // }
+  .group-avatar {
+    margin: 8px 8px 8px 0;
+    display: inline-block;
+    background-color: rgba(200, 200, 200, 0.1);
   }
 
   .v-treeview-node__root:hover .actions {

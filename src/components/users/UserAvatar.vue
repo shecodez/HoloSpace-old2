@@ -47,7 +47,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters("deck", ["deck"]),
+    ...mapGetters("decks", ["deck"]),
     statusIcon() {
       const USER_STATUS = (this.user.status || "").toUpperCase();
       return !this.user.is_online || this.user.status === "HIDE"

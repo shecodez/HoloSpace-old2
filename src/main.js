@@ -8,7 +8,7 @@ import store from "./store";
 
 import vuetify from "./plugins/vuetify";
 import firebase from "./plugins/firebase";
-import i18n from "./plugins/i18n";
+import i18n from "./plugins/vueI18n";
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;

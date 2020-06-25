@@ -12,9 +12,9 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 
-import Layout from "@/layouts/Main.vue";
-import MessageList from "@/components/MessageList";
-import MessageInputForm from "@/components/MessageInputForm";
+import Layout from "@/layouts/MainLayout";
+import MessageList from "@/components/chat/MessageList";
+import MessageInputForm from "@/components/chat/MessageInputForm";
 
 export default {
   name: "DirectChat",
@@ -24,26 +24,28 @@ export default {
     this.setSideDrawerIsOpen(true);
     this.setMetaDrawerIsMini(true);
   },
-  mounted() {
-    // this.initDecksByUserId()
-    this.initUsersByUserId();
-    this.initChatByDiskId(this.$route.params.disk_id);
+  created() {
+    // this.getSubsByDiskId()
+    this.getFriendsOfUid();
+    this.getChatByDiskId(this.$route.params.disk_id);
+    this.getDisksByUid();
   },
   computed: {
     ...mapState("users", ["friends"]),
     ...mapGetters("chat", ["filteredMessages"]),
-    ...mapState("auth", ["user"]),
+    ...mapState("auth", ["user"])
   },
   watch: {
     "$route.params.disk_id": function(value) {
-      this.initChatByDiskId(value);
-    },
+      this.getChatByDiskId(value);
+    }
   },
   methods: {
     ...mapActions("app", ["setSideDrawerIsOpen", "setMetaDrawerIsMini"]),
-    ...mapActions("users", ["initUsersByUserId"]), // this.friends
-    ...mapActions("chat", ["initChatByDiskId"]), // this.messages
-  },
+    ...mapActions("users", ["getFriendsOfUid"]),
+    ...mapActions("disks", ["getDisksByUid"]),
+    ...mapActions("chat", ["getChatByDiskId"])
+  }
 };
 </script>
 
