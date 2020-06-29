@@ -1,12 +1,10 @@
 <template>
-  <div class="messages">
-    <v-list color="transparent">
-      <template v-for="(message) in messages">
-        <!-- <v-subheader v-if="message.header" :key="message.header" v-text="message.header"></v-subheader> -->
-        <MessageListItem :key="message.id" :message="message" :authors="authors" />
-      </template>
-    </v-list>
-  </div>
+  <v-list class="message-list" color="transparent">
+    <template v-for="(message) in messages">
+      <v-subheader v-if="message.header" :key="message.header" v-text="message.header"></v-subheader>
+      <MessageListItem :key="message.id" :message="message" :authors="authors" />
+    </template>
+  </v-list>
 </template>
 
 <script>
@@ -39,8 +37,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.messages {
-  height: 100%;
-  overflow-y: auto;
+.message-list {
+  flex: 1;
+  min-height: 0;
 }
 </style>

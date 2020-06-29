@@ -1,11 +1,9 @@
 <template>
   <Layout page="DirectChat" :users="friends">
-    <v-card-text class="flex-1">
+    <div class="d-flex flex-column main-slot">
       <MessageList :messages="filteredMessages" />
-    </v-card-text>
-    <v-card-actions>
       <MessageInputForm />
-    </v-card-actions>
+    </div>
   </Layout>
 </template>
 
@@ -50,8 +48,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flex-1 {
-  flex: 1;
-  overflow: hidden;
+.main-slot {
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
 }
 </style>

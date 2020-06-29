@@ -25,11 +25,11 @@ export default {
     AppBar,
     NavigationDrawer,
     Footer,
-    Snackbar,
+    Snackbar
   },
 
   data: () => ({}),
-  computed: mapState("app", ["showAppBar", "showFooter"]),
+  computed: mapState("app", ["showAppBar", "showFooter"])
 };
 </script>
 

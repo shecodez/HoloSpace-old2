@@ -6,6 +6,7 @@ import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Chat from "@/views/Chat.vue";
 import DirectChat from "@/views/DirectChat.vue";
+import Profile from "@/views/Profile.vue";
 import Test from "@/views/Test.vue";
 
 import firebase from "@/plugins/firebase";
@@ -43,6 +44,12 @@ const routes = [
     name: "Register",
     component: Register,
     meta: { requiresGuest: true },
+  },
+  {
+    path: "/@me",
+    name: "Profile",
+    component: Profile,
+    meta: { requiresAuth: true },
   },
   {
     path: "/d/:deck_id/:disk_id",

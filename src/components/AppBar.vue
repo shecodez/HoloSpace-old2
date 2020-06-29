@@ -22,7 +22,7 @@
 
     <v-spacer></v-spacer>
     <span v-if="isLoggedIn">
-      <v-btn to="/chat" outlined rounded>Open App</v-btn>
+      <v-btn to="/@me" outlined rounded>Open App</v-btn>
       <v-btn @click="logout" text>Logout</v-btn>
     </span>
     <span v-else>

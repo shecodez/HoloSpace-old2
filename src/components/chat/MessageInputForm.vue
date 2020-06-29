@@ -1,5 +1,5 @@
 <template>
-  <v-form v-if="disk.id" ref="form" class="message-form">
+  <v-form v-if="disk.id" ref="form" class="message-form mt-3">
     <v-text-field
       @click:clear="clear"
       @keydown.enter.prevent.stop="submit"
@@ -86,12 +86,12 @@ export default {
 
 <style lang="scss">
 .message-form {
-  width: 100%;
-  margin: 0 76px;
+  width: 90%;
+  margin: auto;
 }
 @media (max-width: 960px) {
   .message-form {
-    margin: 0 12px;
+    width: 95%;
   }
 }
 .theme--dark.v-text-field--solo {

@@ -21,8 +21,9 @@
             <v-col cols="1" class="main-col flex-grow-1 flex-shrink-0">
               <v-card class="main-c d-flex flex-column" tile>
                 <MainToolbar />
-
-                <slot></slot>
+                <v-responsive class="flex-1">
+                  <slot></slot>
+                </v-responsive>
               </v-card>
             </v-col>
 

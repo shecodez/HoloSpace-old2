@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRx from "vue-rx";
 import axios from "axios";
+import vb from "vue-babylonjs";
 
 import App from "./App.vue";
 import router from "./router";
@@ -14,6 +15,7 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 Vue.use(VueRx); // TODO: import vueRx from "./plugins/vueRx";
+Vue.use(vb); // TODO: import vueBabylon from "./plugins/vueBabylon"
 
 let app;
 
